@@ -159,9 +159,21 @@ def index():
 #
 @app.route('/another')
 def another():
+    
   return render_template("another.html")
 
 
+@app.route("/customerlist")
+def customer():
+    cursor = g.conn.execute("select (%s) from customer",c_name)
+    names = []
+    for result in cursor:
+        names.append(result['c_name'])
+    cursor.close()
+    context = dict(data=names)
+    return render_template("customer.html",**context)
+    
+        
 # Example of adding new data to the database
 @app.route('/add', methods=['POST'])
 def add():
