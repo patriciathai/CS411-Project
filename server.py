@@ -162,6 +162,25 @@ def another():
     
   return render_template("another.html")
 
+@app.route('/homepage')
+def home():
+    
+    return render_template('home.html')
+
+
+
+@app.route('/customer')
+def get_customer():
+    return render_template('customer.html')
+
+@app.route('/deliver')
+def get_deliver_emp():
+    return render_template('deliver_emp.html')
+
+@app.route('/restaurant')
+def get_restaurant():
+    return render_template('restaurant.html')
+
 
 @app.route("/customerlist")
 def customer():
