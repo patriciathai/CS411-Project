@@ -165,7 +165,7 @@ def another():
 
 @app.route("/customerlist")
 def customer():
-    cursor = g.conn.execute("select (%s) from customer",c_name)
+    cursor = g.conn.execute("select c_name from customer")
     names = []
     for result in cursor:
         names.append(result['c_name'])
