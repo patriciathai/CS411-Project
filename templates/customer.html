@@ -1,17 +1,35 @@
 <html>
-
-
-<div>  
-
-{{data}}
-
-
-</div>
-
-<h3> Customer Names </h3>
-
-<div>   {% for n in data %}   
-    <h6>{{n}}  </h6>
-    {% endfor %}
-</div>
+<body>
+    <h1>Manhattan Food Delivery</h1>
+    <h2>Customer Portal</h2>
+    <div class="login">
+        <p>If you are an existing customer,</p>
+        <h3>Log In:</h3>
+        <form>
+            <label for="l_name">Full Name:</label><br>
+            <input type="text" id="l_name" name="l_name"><br>
+            <label for="l_email">Email:</label><br>
+            <input type="text" id="l_email" name="l_email">
+        </form>
+        <form action = "/customer_login" method = "POST">
+            <button name = "Enter">Enter</button>
+        </form>
+    </div>
+    <br>
+    <div class="signup">
+        <p>If you are a new customer,</p>
+        <h3>Sign Up:</h3>
+        <form>
+            <label for="s_name">Full Name:</label><br>
+            <input type="text" id="s_name" name="s_name"><br>
+            <label for="s_email">Email:</label><br>
+            <input type="text" id="s_email" name="s_email"><br>
+            <label for="s_phone">Phone Number:</label><br>
+            <input type="text" id="s_phone" name="s_phone">
+        </form>
+        <form action="/customer_signup" method = "POST">
+            <button name = "Enter">Enter</button>
+        </form>
+    </div>
+</body>
 </html>
