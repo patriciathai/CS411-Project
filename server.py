@@ -173,9 +173,9 @@ def home():
 def get_customer():
     return render_template('customer.html')
 
-@app.route('/deliver')
-def get_deliver_emp():
-    return render_template('deliver_emp.html')
+@app.route('/driver')
+def get_driver():
+    return render_template('driver.html')
 
 @app.route('/restaurant')
 def get_restaurant():
