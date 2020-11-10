@@ -86,38 +86,7 @@ def customer_signup():
   g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
   return render_template('customer_signup.html', ) #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
 
-<<<<<<< HEAD
-""" @app.route("/driver_signup")  
-def driver_signup():
-  name = request.form['s_name']
-  email = request.form['s_email']
-  phone = request.form['s_phone']
-  did = str(int(last_did) +1).zfill(5)
-
-  g.conn.execute("INSERT INTO driver VALUES (%s, %s, %s, %s)", did, email, phone, name)
-  return redirect('/driver_main')  """
-=======
-#@app.route("/customer_signup_next") #Working on this tomorrow
-#def customer_signup_next():
-    
-
-#This retrieves most recent driver id in the driver table, which lets us assign an id to a new driver
-cursor = g.conn.execute("SELECT did FROM driver ORDER BY did DESC LIMIT 1")
-last_did = cursor[0][0]
-cursor.close()
-
-@app.route("/driver_signup")  
-def driver_signup():
-    name = request.form['s_name']
-    email = request.form['s_email']
-    phone = request.form['s_phone']
-    did = str(int(last_did) +1).zfill(5)
-
-    g.conn.execute("INSERT INTO driver VALUES (%s, %s, %s, %s)", name, email, phone, did)
-    return redirect('/driver_signup_next?did=did') 
- 
->>>>>>> d305c4a6a86fa12738553b36d43c30f4241b4e12
-
+""" @app.route(
 if __name__ == "__main__":
   import click
 
