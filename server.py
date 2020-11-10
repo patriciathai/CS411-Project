@@ -86,7 +86,7 @@ def customer_signup():
   g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
   return render_template('customer_signup.html', ) #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
 
-""" @app.route(
+@app.route(
 if __name__ == "__main__":
   import click
 
