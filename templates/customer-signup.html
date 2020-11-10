@@ -2,10 +2,23 @@
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-        <div class="address">
-            <p>Plase enter the address you want your food to be delivered to</p>
+
+        <div class="signup">
+            <p>If you are a new customer,</p>
+            <h3>Sign Up:</h3>
+            <form action="/customer_login" method = "POST">
+                <label for="s_name">Full Name:</label><br>
+                <input type="text" id="s_name" name="s_name"><br>
+                <label for="s_email">Email:</label><br>
+                <input type="text" id="s_email" name="s_email"><br>
+                <label for="s_phone">Phone Number:</label><br>
+                <input type="text" id="s_phone" name="s_phone">
+
+
+
+            <p>Please enter the address you want your food to be delivered to</p>
             <h3>Address:</h3>
-            <form>
+
                 <label for="number">Number:</label><br>
                 <input type="text" id="number" name="number"><br>
                 <label for="street">Street:</label><br>
@@ -18,21 +31,21 @@
                 <input type="text" id="city" name="city"><br>
                 <label for="state">State:</label><br>
                 <input type="text" id="state" name="state"><br>
-            </form>
-        </div>
+
+
         <br>
-        <div class="signup">
+
             <p>Please enter your credit/debit card information</p>
             <h3>Payment Method:</h3>
-            <form>
+
                 <label for="card_num">Card Number:</label><br>
                 <input type="text" id="card_num" name="card_num"><br>
                 <label for="exp">Expiration Date (mm/dd/yy):</label><br>
                 <input type="text" id="exp" name="exp"><br>
                 <label for="sec">Security Code:</label><br>
                 <input type="text" id="sec" name="sec">
-            </form>
-            <form action="/customer_login" method = "POST">
+
+
                 <button name = "Save">Save</button>
             </form>
         </div>

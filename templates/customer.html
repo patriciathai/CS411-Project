@@ -16,20 +16,9 @@
             </form>
         </div>
         <br>
-        <div class="signup">
-            <p>If you are a new customer,</p>
-            <h3>Sign Up:</h3>
-            <form>
-                <label for="s_name">Full Name:</label><br>
-                <input type="text" id="s_name" name="s_name"><br>
-                <label for="s_email">Email:</label><br>
-                <input type="text" id="s_email" name="s_email"><br>
-                <label for="s_phone">Phone Number:</label><br>
-                <input type="text" id="s_phone" name="s_phone">
-            </form>
-            <form action="/add_customer" method = "GET">
-                <button name = "Enter">Enter</button>
-            </form>
-        </div>
+        <form action = "/customer_signup" method = "GET">
+        <button type ="Submit">Not a customer? Sign Up </button>
+      </form>
+
     </body>
 </html>
