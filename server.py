@@ -71,20 +71,26 @@ def get_driver():
 def get_restaurant():
   return render_template('restaurant.html')
 
-@app.route("/customer_signup")
-def customer_signup():
+@app.route("/add_customer")
+def add_customer():
     #This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
     cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
-    last_cid = cursor[0][0]
+    last_cid = []
+    for result in cursor:
+        last_cid.append(result[0])
     cursor.close()
 
     name = request.form['s_name']
     email = request.form['s_email']
     phone = request.form['s_phone']
-    cid = str(int(last_cid) + 1).zfill(5)
+    cid = str(int(last_cid[0]) + 1).zfill(5)
 
     g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
-    return render_template('customer_signup.html') #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
+    return redirect('/customer_signup') #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
+
+@app.route("/customer_signup")
+def customer_signup():
+    return render_template('customer-signup.html')
 
 if __name__ == "__main__":
   import click
