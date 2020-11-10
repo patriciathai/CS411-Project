@@ -21,6 +21,13 @@ DATABASEURI = "postgresql://ncp2132:patricianicole@34.75.150.200/proj1part2"
 
 engine = create_engine(DATABASEURI)
 
+engine.execute("""CREATE TABLE IF NOT EXISTS customer_temp (
+  cid		varchar(10),
+	c_email	varchar(30),
+	c_phone	char(10),
+	c_name	varchar(20),
+);""")
+
 @app.before_request
 def before_request():
   """
@@ -76,11 +83,18 @@ def customer_signup():
   phone = request.form['s_phone']
   cid = str(int(last_cid) + 1).zfill(5)
 
-  g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s)', name, email, phone, cid)
-  return redirect('/customer_signup_next?cid=cid') #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
+  g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
+  return render_template('customer_signup.html', ) #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
 
-@app.route("/customer_signup_next") #Working on this tomorrow
+""" @app.route("/driver_signup")  
+def driver_signup():
+  name = request.form['s_name']
+  email = request.form['s_email']
+  phone = request.form['s_phone']
+  did = str(int(last_did) +1).zfill(5)
 
+  g.conn.execute("INSERT INTO driver VALUES (%s, %s, %s, %s)", did, email, phone, name)
+  return redirect('/driver_main')  """
 
 if __name__ == "__main__":
   import click

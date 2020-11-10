@@ -1,0 +1,40 @@
+<html>
+    <body>
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Customer Portal</h2>
+        <div class="address">
+            <p>Plase enter the address you want your food to be delivered to</p>
+            <h3>Address:</h3>
+            <form>
+                <label for="number">Number:</label><br>
+                <input type="text" id="number" name="number"><br>
+                <label for="street">Street:</label><br>
+                <input type="text" id="street" name="street"><br>
+                <label for="apt">Apartment:</label><br>
+                <input type="text" id="apt" name="apt"><br>
+                <label for="zip">Zip Code:</label><br>
+                <input type="text" id="zip" name="zip"><br>
+                <label for="city">City:</label><br>
+                <input type="text" id="city" name="city"><br>
+                <label for="state">State:</label><br>
+                <input type="text" id="state" name="state"><br>
+            </form>
+        </div>
+        <br>
+        <div class="signup">
+            <p>Please enter your credit/debit card information</p>
+            <h3>Payment Method:</h3>
+            <form>
+                <label for="card_num">Card Number:</label><br>
+                <input type="text" id="card_num" name="card_num"><br>
+                <label for="exp">Expiration Date (mm/dd/yy):</label><br>
+                <input type="text" id="exp" name="exp"><br>
+                <label for="sec">Security Code:</label><br>
+                <input type="text" id="sec" name="sec">
+            </form>
+            <form action="/customer_login" method = "POST">
+                <button name = "Save">Save</button>
+            </form>
+        </div>
+    </body>
+</html>
