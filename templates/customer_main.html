@@ -1,7 +1,17 @@
 <html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+
+            var cid = '{{cid}}'
+            var c_name= '{{c_name}}'
+
+            $(".welcome").html("<h3>Welcome, " + c_name + "<h3>")
+        </script>
+    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-        <p>Working on this</p>
+        <div class="welcome"></div>
     </body>
 </html>

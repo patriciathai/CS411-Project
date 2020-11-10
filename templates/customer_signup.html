@@ -1,10 +1,16 @@
 <html>
     <head>
         <style>
+            input {
+                width: 300px;
+                margin-bottom: 5px;
+            }
+
             .save_btn {
                 margin-top: 20px;
                 font-size: 20px;
                 padding: 10px;
+                width: 100px;
             }
         </style>
     </head>
@@ -12,7 +18,7 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
         <form method="POST" action="/add_customer">
-            <div class="col-4">
+            <div class="account">
                 <p>Please fill up your basic account information</p>
                 <h3>Account Info:</h3>
                 <label for="s_name">Full Name:</label><br>
@@ -23,7 +29,7 @@
                 <input type="text" id="s_phone" name="s_phone">
             </div><br>
     
-            <div class="col-4">
+            <div class="address">
                 <p>Please enter the address you want your food to be delivered to</p>
                 <h3>Address:</h3>
                 <label for="number">Number:</label><br>
@@ -40,7 +46,7 @@
                 <input type="text" id="state" name="state"><br>
             </div><br>
 
-            <div class="col-4">
+            <div class="payment">
                 <p>Please enter your credit/debit card information</p>
                 <h3>Payment Method:</h3>
                 <label for="card_num">Card Number:</label><br>

@@ -90,11 +90,19 @@ def add_customer():
   g.conn.execute('INSERT INTO payment_method VALUES (%s, %s, %s)', card_num, exp, sec)
   g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
 
-  return redirect('/customer_main')
+  url = '/customer_main/' + cid
+  return redirect(url)
 
-@app.route("/customer_main")
-def customer_main():
-  return render_template('customer_main.html')
+@app.route("/customer_main/<cid>")
+def customer_main(cid):
+  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={cid}".format(cid=cid))
+  c_names = []
+  for result in cursor:
+    c_names.append(result[0])  # can also be accessed using result[0]
+  cursor.close()
+  c_name = c_names[0]
+  
+  return render_template('customer_main.html', cid = cid, c_name = c_name)
 
 @app.route('/driver')
 def get_driver():
