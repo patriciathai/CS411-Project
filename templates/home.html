@@ -1,25 +1,14 @@
 <html>
-    <script>
-        function customer() {
-            window.location.href = '/customer'
-        }
-        function driver() {
-            window.location.href = '/driver'
-        }
-        function restaurant() {
-            window.location.href = '/restaurant'
-        }
-    </script>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <p> Choose your service: </p> 
-        <form onclick="customer()">
+        <form method="GET" action="/customer">
             <button name = "Customer"> Customer </button>
         </form>
-        <form onclick="driver()">
+        <form method="GET" action="/driver">
             <button name = "Delivery Driver"> Delivery Driver</button>
         </form> 
-        <form onclick="restaurant()">
+        <form method="GET" action="/restaurant">
             <button name = "Restaurant"> Restaurant</button>
         </form>
     </body>

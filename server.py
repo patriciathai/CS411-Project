@@ -22,10 +22,10 @@ DATABASEURI = "postgresql://ncp2132:patricianicole@34.75.150.200/proj1part2"
 engine = create_engine(DATABASEURI)
 
 engine.execute("""CREATE TABLE IF NOT EXISTS customer_temp (
-  cid		varchar(10),
-	c_email	varchar(30),
-	c_phone	char(10),
-	c_name	varchar(20),
+    cid varchar(10),
+    c_email varchar(30),
+    c_phone char(10),
+    c_name varchar(20)
 );""")
 
 @app.before_request
@@ -71,22 +71,21 @@ def get_driver():
 def get_restaurant():
   return render_template('restaurant.html')
 
-#This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
-cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
-last_cid = cursor[0][0]
-cursor.close()
-
 @app.route("/customer_signup")
 def customer_signup():
-  name = request.form['s_name']
-  email = request.form['s_email']
-  phone = request.form['s_phone']
-  cid = str(int(last_cid) + 1).zfill(5)
+    #This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
+    cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
+    last_cid = cursor[0][0]
+    cursor.close()
 
-  g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
-  return render_template('customer_signup.html', ) #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
+    name = request.form['s_name']
+    email = request.form['s_email']
+    phone = request.form['s_phone']
+    cid = str(int(last_cid) + 1).zfill(5)
 
-@app.route(
+    g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
+    return render_template('customer_signup.html') #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
+
 if __name__ == "__main__":
   import click
 
