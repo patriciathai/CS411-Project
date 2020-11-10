@@ -60,7 +60,7 @@ def get_customer():
 def customer_signup():
   return render_template('customer_signup.html')
 
-@app.route("/add_customer")
+@app.route("/add_customer", methods=['POST'])
 def add_customer():
   #This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
   cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
@@ -93,7 +93,7 @@ def add_customer():
   return redirect('/customer_main')
 
 @app.route("/customer_main")
-def customer_signup():
+def customer_main():
   return render_template('customer_main.html')
 
 @app.route('/driver')
