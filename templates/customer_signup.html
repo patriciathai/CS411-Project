@@ -1,24 +1,31 @@
 <html>
+    <head>
+        <style>
+            .save_btn {
+                margin-top: 20px;
+                font-size: 20px;
+                padding: 10px;
+            }
+        </style>
+    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-
-        <div class="signup">
-            <p>If you are a new customer,</p>
-            <h3>Sign Up:</h3>
-            <form action="/customer_login" method = "POST">
+        <form method="POST" action="/add_customer">
+            <div class="col-4">
+                <p>Please fill up your basic account information</p>
+                <h3>Account Info:</h3>
                 <label for="s_name">Full Name:</label><br>
                 <input type="text" id="s_name" name="s_name"><br>
                 <label for="s_email">Email:</label><br>
                 <input type="text" id="s_email" name="s_email"><br>
                 <label for="s_phone">Phone Number:</label><br>
                 <input type="text" id="s_phone" name="s_phone">
-
-
-
-            <p>Please enter the address you want your food to be delivered to</p>
-            <h3>Address:</h3>
-
+            </div><br>
+    
+            <div class="col-4">
+                <p>Please enter the address you want your food to be delivered to</p>
+                <h3>Address:</h3>
                 <label for="number">Number:</label><br>
                 <input type="text" id="number" name="number"><br>
                 <label for="street">Street:</label><br>
@@ -31,23 +38,20 @@
                 <input type="text" id="city" name="city"><br>
                 <label for="state">State:</label><br>
                 <input type="text" id="state" name="state"><br>
+            </div><br>
 
-
-        <br>
-
-            <p>Please enter your credit/debit card information</p>
-            <h3>Payment Method:</h3>
-
+            <div class="col-4">
+                <p>Please enter your credit/debit card information</p>
+                <h3>Payment Method:</h3>
                 <label for="card_num">Card Number:</label><br>
                 <input type="text" id="card_num" name="card_num"><br>
                 <label for="exp">Expiration Date (mm/dd/yy):</label><br>
                 <input type="text" id="exp" name="exp"><br>
                 <label for="sec">Security Code:</label><br>
                 <input type="text" id="sec" name="sec">
+            </div><br>
 
-
-                <button name = "Save">Save</button>
-            </form>
-        </div>
+            <input class="save_btn" type="submit" value="Save">
+        </form>
     </body>
 </html>

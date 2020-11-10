@@ -21,13 +21,6 @@ DATABASEURI = "postgresql://ncp2132:patricianicole@34.75.150.200/proj1part2"
 
 engine = create_engine(DATABASEURI)
 
-engine.execute("""CREATE TABLE IF NOT EXISTS customer_temp (
-    cid varchar(10),
-    c_email varchar(30),
-    c_phone char(10),
-    c_name varchar(20)
-);""")
-
 @app.before_request
 def before_request():
   """
@@ -63,6 +56,46 @@ def home():
 def get_customer():
   return render_template('customer.html')
 
+@app.route("/customer_signup")
+def customer_signup():
+  return render_template('customer_signup.html')
+
+@app.route("/add_customer")
+def add_customer():
+  #This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
+  cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
+  last_cid = []
+  for result in cursor:
+      last_cid.append(result[0])
+  cursor.close()
+
+  name = request.form['s_name']
+  email = request.form['s_email']
+  phone = request.form['s_phone']
+  cid = str(int(last_cid[0]) + 1).zfill(5)
+  g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s)', cid, email, phone, name)
+
+  number = request.form['number']
+  street = request.form['street']
+  apt = request.form['apt']
+  zip_code = request.form['zip']
+  city = request.form['city']
+  state = request.form['state']
+  g.conn.execute('INSERT INTO address VALUES (%s, %s, %s, %s, %s, %s)', number, street, apt, zip_code, city, state)
+  g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, number, street, apt, zip_code)
+
+  card_num = request.form['card_num']
+  exp = request.form['exp']
+  sec = request.form['sec']
+  g.conn.execute('INSERT INTO payment_method VALUES (%s, %s, %s)', card_num, exp, sec)
+  g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
+
+  return redirect('/customer_main')
+
+@app.route("/customer_main")
+def customer_signup():
+  return render_template('customer_main.html')
+
 @app.route('/driver')
 def get_driver():
   return render_template('driver.html')
@@ -70,27 +103,6 @@ def get_driver():
 @app.route('/restaurant')
 def get_restaurant():
   return render_template('restaurant.html')
-
-@app.route("/add_customer")
-def add_customer():
-    #This retrieves most recent customer id in the customer table, which lets us assign an id to a new customer
-    cursor = g.conn.execute("SELECT cid FROM customer ORDER BY cid DESC LIMIT 1")
-    last_cid = []
-    for result in cursor:
-        last_cid.append(result[0])
-    cursor.close()
-
-    name = request.form['s_name']
-    email = request.form['s_email']
-    phone = request.form['s_phone']
-    cid = str(int(last_cid[0]) + 1).zfill(5)
-
-    g.conn.execute('INSERT INTO customer_temp VALUES (%s, %s, %s, %s)', cid, email, phone, name)
-    return redirect('/customer_signup') #this will redirect to page where user can provide an address and payment method, so we need to store the cid in the url
-
-@app.route("/customer_signup")
-def customer_signup():
-    return render_template('customer-signup.html')
 
 if __name__ == "__main__":
   import click
