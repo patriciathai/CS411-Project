@@ -1,17 +1,19 @@
 <html>
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script>
-
-            var cid = '{{cid}}'
-            var c_name= '{{c_name}}'
-
-            $(".welcome").html("<h3>Welcome, " + c_name + "<h3>")
+            var cid = {{cid|tojson}}
+            var c_name= {{c_name|tojson}}
+	    console.log(c_name)
+	
+	    $(document).ready(function(){
+            	$(".welcome").html("Welcome, " + c_name)
+	    })
         </script>
     </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-        <div class="welcome"></div>
+        <h3 class="welcome"></h3>
     </body>
 </html>
