@@ -52,9 +52,27 @@ def teardown_request(exception):
 def home():
   return render_template('home.html')
 
+
+############################# CUSTOMER ####################################
+
 @app.route('/customer')
 def get_customer():
   return render_template('customer.html')
+
+@app.route("/customer_login")
+def customer_login():
+  email = request.form['l_email']
+  string_email = "'"+email+"'"
+
+  cursor = g.conn.execute("SELECT cid FROM customer WHERE email={string_email}".format(string_email=string_email)")
+  list_cid = []
+  for result in cursor:
+      list_cid.append(result[0])
+  cursor.close()
+  cid = list_cid[0]
+
+  url = '/customer_main/' + cid
+  return redirect(url)
 
 @app.route("/customer_signup")
 def customer_signup():
@@ -95,19 +113,59 @@ def add_customer():
 
 @app.route("/customer_main/<cid>")
 def customer_main(cid):
-    string_cid = "'"+cid+"'"
-    cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={string_cid}".format(string_cid=string_cid))
-    c_names = []
-    for result in cursor:
-        c_names.append(result[0])  # can also be accessed using result[0]
-    cursor.close()
-    c_name = c_names[0]
-  
-    return render_template('customer_main.html', cid = string_cid, c_name = c_name)
+  string_cid = "'"+cid+"'"
+  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={string_cid}".format(string_cid=string_cid))
+  c_names = []
+  for result in cursor:
+      c_names.append(result[0])
+  cursor.close()
+  c_name = c_names[0]
+
+  return render_template('customer_main.html', cid = string_cid, c_name = c_name)
+
+
+############################# DRIVER ####################################
 
 @app.route('/driver')
 def get_driver():
   return render_template('driver.html')
+
+@app.route("/driver_signup")
+def driver_signup():
+  return render_template('driver_signup.html')
+
+@app.route("/add_driver", methods=['POST'])
+def add_driver():
+  #This retrieves most recent customer id in the driver table, which lets us assign an id to a new driver
+  cursor = g.conn.execute("SELECT did FROM driver ORDER BY did DESC LIMIT 1")
+  last_did = []
+  for result in cursor:
+      last_did.append(result[0])
+  cursor.close()
+
+  name = request.form['s_name']
+  email = request.form['s_email']
+  phone = request.form['s_phone']
+  did = str(int(last_did[0]) + 1).zfill(5)
+  g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s)', did, email, phone, name)
+
+  url = '/driver_main/' + did
+  return redirect(url)
+
+@app.route("/driver_main/<did>")
+def driver_main(did):
+  string_did = "'"+did+"'"
+  cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={string_did}".format(string_did=string_did))
+  d_names = []
+  for result in cursor:
+      d_names.append(result[0])
+  cursor.close()
+  d_name = d_names[0]
+
+  return render_template('driver_main.html', did = string_did, d_name = d_name)
+
+
+############################# RESTAURANT ####################################
 
 @app.route('/restaurant')
 def get_restaurant():

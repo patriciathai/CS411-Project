@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <style>
+            input {
+                width: 300px;
+                margin-bottom: 5px;
+            }
+
+            .save_btn {
+                margin-top: 20px;
+                font-size: 20px;
+                padding: 10px;
+                width: 100px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Delivery Driver Portal</h2>
+        <form method="POST" action="/add_driver">
+            <div class="account">
+                <p>Please fill up your basic information</p>
+                <h3>Account Info:</h3>
+                <label for="s_name">Full Name:</label><br>
+                <input type="text" id="s_name" name="s_name"><br>
+                <label for="s_email">Email:</label><br>
+                <input type="text" id="s_email" name="s_email"><br>
+                <label for="s_phone">Phone Number:</label><br>
+                <input type="text" id="s_phone" name="s_phone">
+            </div><br>
+
+            <input class="save_btn" type="submit" value="Register">
+        </form>
+    </body>
+</html>
