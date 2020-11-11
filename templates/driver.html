@@ -1,21 +1,22 @@
 <html>
-<body>
-    <h1>Manhattan Food Delivery</h1>
-    <h2>Delivery Driver Portal</h2>
-    <div class="login">
-        <p>If you are an existing delivery driver,</p>
-        <h3>Log In:</h3>
-        <form>
-            <label for="l_name">Full Name:</label><br>
-            <input type="text" id="l_name" name="l_name"><br>
-            <label for="l_email">Email:</label><br>
-            <input type="text" id="l_email" name="l_email">
+    <body>
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Delivery Driver Portal</h2>
+        <div class="login">
+            <p>If you are an existing delivery driver,</p>
+            <h3>Log In:</h3>
+            <form action = "/driver_login" method="POST" >
+                <label for="l_name">Full Name:</label><br>
+                <input type="text" id="l_name" name="l_name"><br>
+                <label for="l_email">Email:</label><br>
+                <input type="text" id="l_email" name="l_email">
+                <button type ="Submit">Enter</button>
+            </form>
+        </div>
+        <br>
+        <form action = "/driver_signup" method = "GET">
+            <label for="signup">Want to become a driver?</label>
+            <button name="signup" type ="Submit">Sign Up</button>
         </form>
-    </div>
-    <br>
-    <form action = "/driver_signup" method = "GET">
-        <label for="signup">Want to become a driver?</label>
-        <button name="signup" type ="Submit">Sign Up</button>
-    </form>
-</body>
+    </body>
 </html>

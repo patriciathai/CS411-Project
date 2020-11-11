@@ -67,7 +67,6 @@ def customer_login():
   email = "'"+email+"'"
 
   cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_name={name}".format(email=email, name=name))
-  print(cursor)
   list_cid = []
   for result in cursor:
       list_cid.append(result[0])
@@ -116,15 +115,15 @@ def add_customer():
 
 @app.route("/customer_main/<cid>")
 def customer_main(cid):
-  string_cid = "'"+cid+"'"
-  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={string_cid}".format(string_cid=string_cid))
+  cid = "'"+cid+"'"
+  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={cid}".format(cid=cid))
   c_names = []
   for result in cursor:
       c_names.append(result[0])
   cursor.close()
   c_name = c_names[0]
 
-  return render_template('customer_main.html', cid = string_cid, c_name = c_name)
+  return render_template('customer_main.html', cid = cid, c_name = c_name)
 
 
 ############################# DRIVER ####################################
@@ -133,13 +132,30 @@ def customer_main(cid):
 def get_driver():
   return render_template('driver.html')
 
+@app.route("/driver_login", methods=['POST'] )
+def driver_login():
+  name = request.form['l_name']
+  email = request.form['l_email']
+  name = "'"+name+"'"
+  email = "'"+email+"'"
+
+  cursor = g.conn.execute("SELECT did FROM driver WHERE d_email={email} AND d_name={name}".format(email=email, name=name))
+  list_did = []
+  for result in cursor:
+      list_did.append(result[0])
+  cursor.close()
+  did = list_did[0]
+
+  url = '/driver_main/' + did
+  return redirect(url)
+
 @app.route("/driver_signup")
 def driver_signup():
   return render_template('driver_signup.html')
 
 @app.route("/add_driver", methods=['POST'])
 def add_driver():
-  #This retrieves most recent customer id in the driver table, which lets us assign an id to a new driver
+  #This retrieves most recent driver id in the driver table, which lets us assign an id to a new driver
   cursor = g.conn.execute("SELECT did FROM driver ORDER BY did DESC LIMIT 1")
   last_did = []
   for result in cursor:
@@ -157,15 +173,15 @@ def add_driver():
 
 @app.route("/driver_main/<did>")
 def driver_main(did):
-  string_did = "'"+did+"'"
-  cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={string_did}".format(string_did=string_did))
+  did = "'"+did+"'"
+  cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={did}".format(did=did))
   d_names = []
   for result in cursor:
       d_names.append(result[0])
   cursor.close()
   d_name = d_names[0]
 
-  return render_template('driver_main.html', did = string_did, d_name = d_name)
+  return render_template('driver_main.html', did = did, d_name = d_name)
 
 
 ############################# RESTAURANT ####################################
@@ -173,6 +189,35 @@ def driver_main(did):
 @app.route('/restaurant')
 def get_restaurant():
   return render_template('restaurant.html')
+
+@app.route("/restaurant_login", methods=['POST'] )
+def restaurant_login():
+  name = request.form['l_name']
+  phone = request.form['l_phone']
+  name = "'"+name+"'"
+  phone = "'"+phone+"'"
+
+  cursor = g.conn.execute("SELECT rid FROM restaurant WHERE r_name={name} AND r_phone={phone}".format(name=name, phone=phone))
+  list_rid = []
+  for result in cursor:
+      list_rid.append(result[0])
+  cursor.close()
+  rid = list_rid[0]
+
+  url = '/restaurant_main/' + rid
+  return redirect(url)
+
+@app.route("/restaurant_main/<rid>")
+def restaurant_main(rid):
+  rid = "'"+rid+"'"
+  cursor = g.conn.execute("SELECT r_name FROM restaurant WHERE rid={rid}".format(rid=rid))
+  r_names = []
+  for result in cursor:
+      r_names.append(result[0])
+  cursor.close()
+  r_name = r_names[0]
+
+  return render_template('restaurant_main.html', rid = rid, r_name = r_name)
 
 if __name__ == "__main__":
   import click
