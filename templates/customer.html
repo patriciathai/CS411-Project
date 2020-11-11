@@ -5,14 +5,12 @@
         <div class="login">
             <p>If you are an existing customer,</p>
             <h3>Log In:</h3>
-            <form>
+            <form action = "/customer_login" method="POST" >
                 <label for="l_name">Full Name:</label><br>
                 <input type="text" id="l_name" name="l_name"><br>
                 <label for="l_email">Email:</label><br>
-                <input type="text" id="l_email" name="l_email">
-            </form>
-            <form action = "/customer_login" method = "GET">
-                <button name = "Enter">Enter</button>
+                <input type="text" id="l_email" name="l_email"><br>
+                <button type ="Submit">Enter</button>
             </form>
         </div>
         <br>

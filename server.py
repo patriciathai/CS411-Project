@@ -59,12 +59,15 @@ def home():
 def get_customer():
   return render_template('customer.html')
 
-@app.route("/customer_login")
+@app.route("/customer_login", methods=['POST'] )
 def customer_login():
+  name = request.form['l_name']
   email = request.form['l_email']
-  string_email = "'"+email+"'"
+  name = "'"+name+"'"
+  email = "'"+email+"'"
 
-  cursor = g.conn.execute("SELECT cid FROM customer WHERE email={string_email}".format(string_email=string_email)")
+  cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_name={name}".format(email=email, name=name))
+  print(cursor)
   list_cid = []
   for result in cursor:
       list_cid.append(result[0])
@@ -146,7 +149,7 @@ def add_driver():
   name = request.form['s_name']
   email = request.form['s_email']
   phone = request.form['s_phone']
-  did = str(int(last_did[0]) + 1).zfill(5)
+  did = 'D' + str(int(last_did[0][1:]) + 1)
   g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s)', did, email, phone, name)
 
   url = '/driver_main/' + did
