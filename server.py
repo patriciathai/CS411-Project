@@ -281,23 +281,37 @@ def restaurant_main(rid):
       if r_orderdetails[0]['status'] == 'Processing':
         incoming.append(order_info)
       elif r_orderdetails[0]['status'] == 'Preparing Food' or r_orderdetails[0]['status'] == 'Ready for Pickup':
-        pending.append(order_info_)
+        pending.append(order_info)
       else:
         past.append(order_info)
 
   return render_template('restaurant_main.html', rid = rid, r_name = r_name, incoming = incoming, pending = pending, past = past)
 
-@app.route("<oid>/update_status_preparing", methods=['POST'] )
+@app.route("/restaurant_main/<oid>/update_status_preparing", methods=['POST'] )
 def update_status_preparing(oid):
-  oid = "'"+row['oid']+"'"
+  oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Preparing Food' WHERE status = 'Processing' AND oid = {oid}".format(oid=oid))
-  return redirect(url_for('update_status_preparing')) #refreshes page
+  cursor = g.conn.execute("SELECT rid FROM order_has_menu_item WHERE oid = {oid}".format(oid=oid))
+  list_rid = []
+  for result in cursor:
+    list_rid.append(result[0])
+  cursor.close()
+  rid = list_rid[0]
+  url = '/restaurant_main/' + rid
+  return redirect(url)
 
-@app.route("<oid>/update_status_pickup", methods=['POST'] )
+@app.route("/restaurant_main/<oid>/update_status_pickup", methods=['POST'] )
 def update_status_pickup(oid):
-  oid = "'"+row['oid']+"'"
+  oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Ready for Pickup' WHERE status = 'Preparing Food' AND oid = {oid}".format(oid=oid))
-  return redirect(url_for('update_status_pickup')) #refreshes page
+  cursor = g.conn.execute("SELECT rid FROM order_has_menu_item WHERE oid = {oid}".format(oid=oid))
+  list_rid = []
+  for result in cursor:
+    list_rid.append(result[0])
+  cursor.close()
+  rid = list_rid[0]
+  url = '/restaurant_main/' + rid
+  return redirect(url)
 
 if __name__ == "__main__":
   import click
