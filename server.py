@@ -185,9 +185,9 @@ def add_driver():
 
 @app.route("/driver_main/<did>")
 def driver_main(did):
-  did = "'"+did+"'"
+  string_did = "'"+did+"'"
   #Get driver name from driver id
-  cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={did}".format(did=did))
+  cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={string_did}".format(string_did=string_did))
   d_names = []
   for result in cursor:
     d_names.append(result[0])
@@ -195,9 +195,9 @@ def driver_main(did):
   d_name = d_names[0]
 
   #Get all orders that are ready for pickup, or are on the way/delivered by this driver
-  cursor2 = g.conn.execute("SELECT DISTINCT O.oid, O.status, C.c_name, C.c_phone, L1.number, L1.street, L1.apt, L1.zip, R.r_name, R.r_phone, L2.number AS r_number, L2.street AS r_street, L2.zip AS r_zip FROM places P, customer C, lives_in L1, restaurant R, located_in L2, order_fulfilled_by_driver O, order_has_menu_item M WHERE (O.status='Ready for Pickup' OR O.did={did}) AND P.oid=O.oid AND P.cid=C.cid AND P.cid=L1.cid AND P.oid=M.oid AND M.rid=R.rid AND R.rid=L2.rid".format(did=did))
+  cursor2 = g.conn.execute("SELECT DISTINCT O.oid, O.status, C.c_name, C.c_phone, L1.number, L1.street, L1.apt, L1.zip, R.r_name, R.r_phone, L2.number AS r_number, L2.street AS r_street, L2.zip AS r_zip FROM places P, customer C, lives_in L1, restaurant R, located_in L2, order_fulfilled_by_driver O, order_has_menu_item M WHERE (O.status='Ready for Pickup' OR O.did={string_did}) AND P.oid=O.oid AND P.cid=C.cid AND P.cid=L1.cid AND P.oid=M.oid AND M.rid=R.rid AND R.rid=L2.rid".format(string_did=string_did))
   d_orderdetails = []
-  for result in cursor3:
+  for result in cursor2:
     d_orderdetails.append(result)
   cursor2.close()
 
@@ -237,7 +237,7 @@ def driver_main(did):
 
   return render_template('driver_main.html', did = did, d_name = d_name, pending=pending, ready=ready, past=past)
 
-@app.route("/driver_main/<did>/<oid>/update_status_delivered", methods=['POST'] )
+@app.route("/<did>/<oid>/update_status_delivered", methods=['POST'] )
 def update_status_delivered(did, oid):
   oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Delivered' WHERE status = 'Delivery On the Way' AND oid = {oid}".format(oid=oid))
@@ -245,7 +245,7 @@ def update_status_delivered(did, oid):
   url = '/driver_main/' + did
   return redirect(url)
 
-@app.route("/driver_main/<did>/<oid>/update_status_otw", methods=['POST'] )
+@app.route("/<did>/<oid>/update_status_otw", methods=['POST'] )
 def update_status_otw(did, oid):
   oid = "'"+oid+"'"
   string_did = "'"+did+"'"
@@ -286,9 +286,9 @@ def restaurant_login():
 
 @app.route("/restaurant_main/<rid>")
 def restaurant_main(rid):
-  rid = "'"+rid+"'"
+  string_rid = "'"+rid+"'"
   #Get restaurant name from rid
-  cursor1 = g.conn.execute("SELECT r_name FROM restaurant WHERE rid={rid}".format(rid=rid))
+  cursor1 = g.conn.execute("SELECT r_name FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
   r_names = []
   for result in cursor1:
       r_names.append(result[0])
@@ -296,7 +296,7 @@ def restaurant_main(rid):
   r_name = r_names[0]
 
   #Get all orders for rid
-  cursor2 = g.conn.execute("SELECT oid, m_name, quantity FROM order_has_menu_item WHERE rid={rid}".format(rid=rid))
+  cursor2 = g.conn.execute("SELECT oid, m_name, quantity FROM order_has_menu_item WHERE rid={string_rid}".format(string_rid=string_rid))
   r_orders = []
   for result in cursor2:
     r_orders.append(result)
@@ -346,7 +346,7 @@ def restaurant_main(rid):
 
   return render_template('restaurant_main.html', rid = rid, r_name = r_name, incoming = incoming, pending = pending, past = past)
 
-@app.route("/restaurant_main/<rid>/<oid>/update_status_preparing", methods=['POST'] )
+@app.route("/<rid>/<oid>/update_status_preparing", methods=['POST'] )
 def update_status_preparing(rid, oid):
   oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Preparing Food' WHERE status = 'Processing' AND oid = {oid}".format(oid=oid))
@@ -354,7 +354,7 @@ def update_status_preparing(rid, oid):
   url = '/restaurant_main/' + rid
   return redirect(url)
 
-@app.route("/restaurant_main/<rid>/<oid>/update_status_pickup", methods=['POST'] )
+@app.route("/<rid>/<oid>/update_status_pickup", methods=['POST'] )
 def update_status_pickup(rid, oid):
   oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Ready for Pickup' WHERE status = 'Preparing Food' AND oid = {oid}".format(oid=oid))
