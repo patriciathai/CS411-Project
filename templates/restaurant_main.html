@@ -1,9 +1,18 @@
 <html>
     <head>
     	<style>
-    		h4 {
-			text-decoration: underline;
-		}
+    		.title {
+			    text-decoration: underline;
+                text-transform: uppercase;
+                margin-top: 50px;
+		    }
+
+            .order_content {
+                border: 1px solid grey;
+                margin-top: 10px;
+                width: 500px;
+                padding: 5px;
+            }
     	</style>
     </head>
     <body>
@@ -11,12 +20,12 @@
         <h2>Restaurant Portal</h2>
         <h3 class="welcome">{{r_name}} - View your orders:</h3>
         <div class="incoming">
-            <h4>Incoming Orders:</h4>
+            <p class="title">Incoming Orders</p>
             {% if not incoming %}
                 <p>You have no incoming orders.</p>
             {% else %}
                 {% for order in incoming %}
-                    <div>
+                    <div class="order_content">
                         <p><strong>Order ID: </strong>{{order['oid']}}</p>
                         <p><strong>Customer: </strong>{{order['c_name']}}</p>
                         <p><strong>Menu Items: </strong></p>
@@ -24,17 +33,20 @@
                             <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
-		    </div><br>
+                        <form action = "{{order['oid']}}/update_status_preparing" method="POST" >
+                            <button type ="Submit">Accept Order & Start Preparing Food</button>
+                        </form>
+		            </div>
                 {% endfor %}
             {% endif %}
-        </div><br><br>
+        </div>
         <div class="pending">
-            <h4>Pending Orders:</h4>
+            <p class="title">Pending Orders</p>
             {% if not pending %}
                 <p>You have no pending orders.</p>
             {% else %}
                 {% for order in pending %}
-                    <div>
+                    <div class="order_content">
                         <p><strong>Order ID: </strong>{{order['oid']}}</p>
                         <p><strong>Customer: </strong>{{order['c_name']}}</p>
                         <p><strong>Menu Items: </strong></p>
@@ -42,17 +54,23 @@
                             <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
-                    </div><br>
+                        <p><strong>Status: </strong>{{order['status']}}</p>
+                        {% if order['status'] == 'Preparing Food' %}
+                            <form action = "{{order['oid']}}/update_status_pickup" method="POST" >
+                                <button type ="Submit">Set Order Ready for Pickup</button>
+                            </form>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% endif %}
-        </div><br><br>
+        </div>
         <div class="past">
-            <h4>Past Orders:</h4>
+            <p class="title">Past Orders</p>
             {% if not past %}
                 <p>You have no past orders.</p>
             {% else %}
                 {% for order in past %}
-                    <div>
+                    <div class="order_content">
                         <p><strong>Order ID: </strong>{{order['oid']}}</p>
                         <p><strong>Customer: </strong>{{order['c_name']}}</p>
                         <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
@@ -62,7 +80,7 @@
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
                         <p><strong>Status: </strong>{{order['status']}}</p>
-                    </div><br>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>

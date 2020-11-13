@@ -270,29 +270,34 @@ def restaurant_main(rid):
         r_orderdetails.append(result)
       cursor3.close()
 
-      if r_orderdetails[0]['status'] == 'Processing' or r_orderdetails[0]['status'] == 'Preparing Food':
-        order_info = {
-          'oid': row['oid'],
-          'c_name': r_orderdetails[0]['c_name'],
-          'total_price': r_orderdetails[0]['total_price'],
-          'menu_items': menu_items
-        }
-        if r_orderdetails[0]['status'] == 'Processing':
-          incoming.append(order_info)
-        else:
-          pending.append(order_info)
+      order_info = {
+        'oid': row['oid'],
+        'c_name': r_orderdetails[0]['c_name'],
+        'total_price': r_orderdetails[0]['total_price'],
+        'menu_items': menu_items,
+        'status' : r_orderdetails[0]['status'],
+        'd_name': r_orderdetails[0]['d_name']
+      }
+      if r_orderdetails[0]['status'] == 'Processing':
+        incoming.append(order_info)
+      elif r_orderdetails[0]['status'] == 'Preparing Food' or r_orderdetails[0]['status'] == 'Ready for Pickup':
+        pending.append(order_info_)
       else:
-        order_info = {
-          'oid': row['oid'],
-          'c_name': r_orderdetails[0]['c_name'],
-          'total_price': r_orderdetails[0]['total_price'],
-          'menu_items': menu_items,
-          'status' : r_orderdetails[0]['status'],
-          'd_name': r_orderdetails[0]['d_name']
-        }
         past.append(order_info)
 
   return render_template('restaurant_main.html', rid = rid, r_name = r_name, incoming = incoming, pending = pending, past = past)
+
+@app.route("<oid>/update_status_preparing", methods=['POST'] )
+def update_status_preparing(oid):
+  oid = "'"+row['oid']+"'"
+  g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Preparing Food' WHERE status = 'Processing' AND oid = {oid}".format(oid=oid))
+  return redirect(url_for('update_status_preparing')) #refreshes page
+
+@app.route("<oid>/update_status_pickup", methods=['POST'] )
+def update_status_pickup(oid):
+  oid = "'"+row['oid']+"'"
+  g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Ready for Pickup' WHERE status = 'Preparing Food' AND oid = {oid}".format(oid=oid))
+  return redirect(url_for('update_status_pickup')) #refreshes page
 
 if __name__ == "__main__":
   import click
