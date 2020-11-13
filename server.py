@@ -249,8 +249,7 @@ def restaurant_main(rid):
   past = []
   
   #iterate through r_orders to get info for all incoming, pending, and past orders
-  for i in r_orders:
-    row = r_orders[i]
+  for row in r_orders:
     if row['oid'] in unique_oid: #if we already have the info for this oid, move on to the next one
       continue
     else:
@@ -259,10 +258,9 @@ def restaurant_main(rid):
 
       #Get list of menu items and quantities for order
       menu_items = []
-      for j in r_orders:
-        row2 = r_orders[j]
+      for row2 in r_orders:
         if row2['oid'] == row['oid']:
-          menu_item = {'menu_item': row2['menu_item'], 'qty': row2['quantity']}
+          menu_item = {'m_name': row2['m_name'], 'quantity': row2['quantity']}
           menu_items.append(menu_item)
 
       #Get all other info
@@ -275,7 +273,7 @@ def restaurant_main(rid):
       if r_orderdetails[0]['status'] == 'Processing' or r_orderdetails[0]['status'] == 'Preparing Food':
         order_info = {
           'oid': row['oid'],
-          'cid': r_orderdetails[0]['c_name'],
+          'c_name': r_orderdetails[0]['c_name'],
           'total_price': r_orderdetails[0]['total_price']
           'menu_items': menu_items
         }
@@ -286,11 +284,11 @@ def restaurant_main(rid):
       else:
         order_info = {
           'oid': row['oid'],
-          'cid': r_orderdetails[0]['c_name'],
+          'c_name': r_orderdetails[0]['c_name'],
           'total_price': r_orderdetails[0]['total_price']
           'menu_items': menu_items,
           'status' : r_orderdetails[0]['status'],
-          'driver': r_orderdetails[0]['d_name']
+          'd_name': r_orderdetails[0]['d_name']
         }
         past.append(order_info)
 

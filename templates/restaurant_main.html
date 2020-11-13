@@ -5,12 +5,59 @@
         <h3 class="welcome">{{r_name}} - View your orders:</h3>
         <div class="incoming">
             <h4>Incoming Orders:</h4>
+            {% if not incoming %}
+                <p>You have no incoming orders.</p>
+            {% else %}
+                {% for order in incoming %}
+                    <div>
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Customer: </strong>{{order['c_name']}}</p>
+                        <p><strong>Menu Items: </strong></p>
+                        {% for item in order['menu_items'] %}
+                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                        {% endfor %}
+                        <p><strong>Total: </strong>${{order['total_price']}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="pending">
             <h4>Pending Orders:</h4>
+            {% if not pending %}
+                <p>You have no pending orders.</p>
+            {% else %}
+                {% for order in pending %}
+                    <div>
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Customer: </strong>{{order['c_name']}}</p>
+                        <p><strong>Menu Items: </strong></p>
+                        {% for item in order['menu_items'] %}
+                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                        {% endfor %}
+                        <p><strong>Total: </strong>${{order['total_price']}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
         <div class="past">
             <h4>Past Orders:</h4>
+            {% if not past %}
+                <p>You have no past orders.</p>
+            {% else %}
+                {% for order in past %}
+                    <div>
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Customer: </strong>{{order['c_name']}}</p>
+                        <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
+                        <p><strong>Menu Items: </strong></p>
+                        {% for item in order['menu_items'] %}
+                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                        {% endfor %}
+                        <p><strong>Total: </strong>${{order['total_price']}}</p>
+                        <p><strong>Status: </strong>{{order['status']}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </body>
 </html>
