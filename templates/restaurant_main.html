@@ -33,7 +33,7 @@
                             <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
-                        <form action = "{{order['oid']}}/update_status_preparing" method="POST" >
+                        <form action = "/{{rid}}/{{order['oid']}}/update_status_preparing" method="POST" >
                             <button type ="Submit">Accept Order & Start Preparing Food</button>
                         </form>
 		            </div>
@@ -56,7 +56,7 @@
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
                         <p><strong>Status: </strong>{{order['status']}}</p>
                         {% if order['status'] == 'Preparing Food' %}
-                            <form action = "{{order['oid']}}/update_status_pickup" method="POST" >
+                            <form action = "/{{rid}}/{{order['oid']}}/update_status_pickup" method="POST" >
                                 <button type ="Submit">Set Order Ready for Pickup</button>
                             </form>
                         {% endif %}

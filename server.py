@@ -186,6 +186,7 @@ def add_driver():
 @app.route("/driver_main/<did>")
 def driver_main(did):
   did = "'"+did+"'"
+  #Get driver name from driver id
   cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={did}".format(did=did))
   d_names = []
   for result in cursor:
@@ -193,7 +194,65 @@ def driver_main(did):
   cursor.close()
   d_name = d_names[0]
 
-  return render_template('driver_main.html', did = did, d_name = d_name)
+  #Get all orders that are ready for pickup, or are on the way/delivered by this driver
+  cursor2 = g.conn.execute("SELECT DISTINCT O.oid, O.status, C.c_name, C.c_phone, L1.number, L1.street, L1.apt, L1.zip, R.r_name, R.r_phone, L2.number AS r_number, L2.street AS r_street, L2.zip AS r_zip FROM places P, customer C, lives_in L1, restaurant R, located_in L2, order_fulfilled_by_driver O, order_has_menu_item M WHERE (O.status='Ready for Pickup' OR O.did={did}) AND P.oid=O.oid AND P.cid=C.cid AND P.cid=L1.cid AND P.oid=M.oid AND M.rid=R.rid AND R.rid=L2.rid".format(did=did))
+  d_orderdetails = []
+  for result in cursor3:
+    d_orderdetails.append(result)
+  cursor2.close()
+
+  pending = []
+  ready = []
+  past = []
+  for row in d_orderdetails:
+    if row['status'] == 'Delivery On the Way':
+      order_info = {
+      'oid': row['oid'],
+      'status': row['status'],
+      'r_name': row['r_name'],
+      'r_phone': row['r_phone'],
+      'r_address': row['r_number'] + ' ' + row['r_street'] + ', New York, NY ' + row['r_zip'],
+      'c_name': row['c_name'],
+      'c_phone': row['c_phone'],
+      'c_address': row['number'] + ' ' + row['street'] + ', Apt ' + row['apt'] + ', New York, NY ' + row['r_zip'],
+      }
+      pending.append(order_info)
+    elif row['status'] == 'Ready for Pickup':
+      order_info = {
+      'oid': row['oid'],
+      'status': row['status'],
+      'r_name': row['r_name'],
+      'r_address': row['r_number'] + ' ' + row['r_street'] + ', New York, NY ' + row['r_zip'],
+      'c_address': row['number'] + ' ' + row['street'] + ', Apt ' + row['apt'] + ', New York, NY ' + row['r_zip'],
+      }
+      ready.append(order_info)
+    else:
+      order_info = {
+      'oid': row['oid'],
+      'r_name': row['r_name'],
+      'r_address': row['r_number'] + ' ' + row['r_street'] + ', New York, NY ' + row['r_zip'],
+      'c_name': row['c_name'],
+      }
+      past.append(order_info)
+
+  return render_template('driver_main.html', did = did, d_name = d_name, pending=pending, ready=ready, past=past)
+
+@app.route("/driver_main/<did>/<oid>/update_status_delivered", methods=['POST'] )
+def update_status_delivered(did, oid):
+  oid = "'"+oid+"'"
+  g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Delivered' WHERE status = 'Delivery On the Way' AND oid = {oid}".format(oid=oid))
+  
+  url = '/driver_main/' + did
+  return redirect(url)
+
+@app.route("/driver_main/<did>/<oid>/update_status_otw", methods=['POST'] )
+def update_status_otw(did, oid):
+  oid = "'"+oid+"'"
+  string_did = "'"+did+"'"
+  g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Delivery On the Way', did = {string_did} WHERE status = 'Ready for Pickup' AND oid = {oid}".format(string_did=string_did,oid=oid))
+  
+  url = '/driver_main/' + did
+  return redirect(url)
 
 
 
@@ -287,31 +346,27 @@ def restaurant_main(rid):
 
   return render_template('restaurant_main.html', rid = rid, r_name = r_name, incoming = incoming, pending = pending, past = past)
 
-@app.route("/restaurant_main/<oid>/update_status_preparing", methods=['POST'] )
-def update_status_preparing(oid):
+@app.route("/restaurant_main/<rid>/<oid>/update_status_preparing", methods=['POST'] )
+def update_status_preparing(rid, oid):
   oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Preparing Food' WHERE status = 'Processing' AND oid = {oid}".format(oid=oid))
-  cursor = g.conn.execute("SELECT rid FROM order_has_menu_item WHERE oid = {oid}".format(oid=oid))
-  list_rid = []
-  for result in cursor:
-    list_rid.append(result[0])
-  cursor.close()
-  rid = list_rid[0]
+  
   url = '/restaurant_main/' + rid
   return redirect(url)
 
-@app.route("/restaurant_main/<oid>/update_status_pickup", methods=['POST'] )
-def update_status_pickup(oid):
+@app.route("/restaurant_main/<rid>/<oid>/update_status_pickup", methods=['POST'] )
+def update_status_pickup(rid, oid):
   oid = "'"+oid+"'"
   g.conn.execute("UPDATE order_fulfilled_by_driver SET status = 'Ready for Pickup' WHERE status = 'Preparing Food' AND oid = {oid}".format(oid=oid))
-  cursor = g.conn.execute("SELECT rid FROM order_has_menu_item WHERE oid = {oid}".format(oid=oid))
-  list_rid = []
-  for result in cursor:
-    list_rid.append(result[0])
-  cursor.close()
-  rid = list_rid[0]
+  
   url = '/restaurant_main/' + rid
   return redirect(url)
+
+
+
+
+
+
 
 if __name__ == "__main__":
   import click

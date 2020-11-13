@@ -1,7 +1,79 @@
 <html>
+    <head>
+    	<style>
+    		.title {
+			    text-decoration: underline;
+                text-transform: uppercase;
+                margin-top: 50px;
+		    }
+
+            .order_content {
+                border: 1px solid grey;
+                margin-top: 10px;
+                width: 500px;
+                padding: 5px;
+            }
+    	</style>
+    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Delivery Driver Portal</h2>
-	<h3 class="welcome">Welcome, {{d_name}}</h3>
+        <h3 class="welcome">Welcome, {{d_name}}</h3>
+        <div class="pending">
+            <p class="title">Your Current Delivery Orders</p>
+            {% if not pending %}
+                <p>You have no pending orders.</p>
+            {% else %}
+                {% for order in pending %}
+                    <div class="order_content">
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Status: </strong>{{order['status']}}</p>
+                        <p><strong>Deliver from Restaurant: </strong>{{order['r_name']}}</p>
+                        <p><strong>Phone: </strong>{{order['r_phone']}}</p>
+                        <p><strong>Address: </strong>{{order['r_address']}}</p><br>
+                        <p><strong>Deliver to Customer: </strong>{{order['c_name']}}</p>
+                        <p><strong>Phone: </strong>{{order['c_phone']}}</p>
+                        <p><strong>Address: </strong>{{order['c_address']}}</p><br>
+                        <form action = "/{{did}}/{{order['oid']}}/update_status_delivered" method="POST" >
+                            <button type ="Submit">Delivery Complete</button>
+                        </form>
+		            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="ready">
+            <p class="title">All Orders Available for Delivery</p>
+            {% if not ready %}
+                <p>There are no orders available.</p>
+            {% else %}
+                {% for order in ready %}
+                    <div class="order_content">
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Status: </strong>{{order['status']}}</p>
+                        <p><strong>Deliver from Restaurant: </strong>{{order['r_name']}}</p>
+                        <p><strong>Address: </strong>{{order['r_address']}}</p><br>
+                        <p><strong>Deliver to Customer in: </strong>{{order['c_address']}}</p><br>
+                        <form action = "/{{did}}/{{order['oid']}}/update_status_otw" method="POST" >
+                            <button type ="Submit">Fulfill</button>
+                        </form>
+		            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="past">
+            <p class="title">Your Past Deliveries</p>
+            {% if not past %}
+                <p>You have no past deliveries.</p>
+            {% else %}
+                {% for order in past %}
+                    <div class="order_content">
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Delivered from Restaurant: </strong>{{order['r_name']}}</p>
+                        <p><strong>Address: </strong>{{order['r_address']}}</p><br>
+                        <p><strong>Delivered to Customer: </strong>{{order['c_name']}}</p>
+		            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </body>
 </html>
