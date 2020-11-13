@@ -1,4 +1,11 @@
 <html>
+    <head>
+    	<style>
+    		h4 {
+			text-decoration: underline;
+		}
+    	</style>
+    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Restaurant Portal</h2>
@@ -14,13 +21,13 @@
                         <p><strong>Customer: </strong>{{order['c_name']}}</p>
                         <p><strong>Menu Items: </strong></p>
                         {% for item in order['menu_items'] %}
-                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
-                    </div>
+		    </div><br>
                 {% endfor %}
             {% endif %}
-        </div>
+        </div><br><br>
         <div class="pending">
             <h4>Pending Orders:</h4>
             {% if not pending %}
@@ -32,13 +39,13 @@
                         <p><strong>Customer: </strong>{{order['c_name']}}</p>
                         <p><strong>Menu Items: </strong></p>
                         {% for item in order['menu_items'] %}
-                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
-                    </div>
+                    </div><br>
                 {% endfor %}
             {% endif %}
-        </div>
+        </div><br><br>
         <div class="past">
             <h4>Past Orders:</h4>
             {% if not past %}
@@ -51,11 +58,11 @@
                         <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
                         <p><strong>Menu Items: </strong></p>
                         {% for item in order['menu_items'] %}
-                            <p>{{item['quantity']}}&nbsp;{{item['m_name']}}</p>
+                            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
                         <p><strong>Status: </strong>{{order['status']}}</p>
-                    </div>
+                    </div><br>
                 {% endfor %}
             {% endif %}
         </div>

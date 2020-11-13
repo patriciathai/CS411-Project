@@ -274,7 +274,7 @@ def restaurant_main(rid):
         order_info = {
           'oid': row['oid'],
           'c_name': r_orderdetails[0]['c_name'],
-          'total_price': r_orderdetails[0]['total_price']
+          'total_price': r_orderdetails[0]['total_price'],
           'menu_items': menu_items
         }
         if r_orderdetails[0]['status'] == 'Processing':
@@ -285,7 +285,7 @@ def restaurant_main(rid):
         order_info = {
           'oid': row['oid'],
           'c_name': r_orderdetails[0]['c_name'],
-          'total_price': r_orderdetails[0]['total_price']
+          'total_price': r_orderdetails[0]['total_price'],
           'menu_items': menu_items,
           'status' : r_orderdetails[0]['status'],
           'd_name': r_orderdetails[0]['d_name']
