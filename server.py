@@ -53,6 +53,12 @@ def home():
   return render_template('home.html')
 
 
+
+
+
+
+
+
 ############################# CUSTOMER ####################################
 
 @app.route('/customer')
@@ -69,7 +75,7 @@ def customer_login():
   cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_name={name}".format(email=email, name=name))
   list_cid = []
   for result in cursor:
-      list_cid.append(result[0])
+    list_cid.append(result[0])
   cursor.close()
   cid = list_cid[0]
 
@@ -119,11 +125,17 @@ def customer_main(cid):
   cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={cid}".format(cid=cid))
   c_names = []
   for result in cursor:
-      c_names.append(result[0])
+    c_names.append(result[0])
   cursor.close()
   c_name = c_names[0]
 
   return render_template('customer_main.html', cid = cid, c_name = c_name)
+
+
+
+
+
+
 
 
 ############################# DRIVER ####################################
@@ -177,11 +189,17 @@ def driver_main(did):
   cursor = g.conn.execute("SELECT d_name FROM driver WHERE did={did}".format(did=did))
   d_names = []
   for result in cursor:
-      d_names.append(result[0])
+    d_names.append(result[0])
   cursor.close()
   d_name = d_names[0]
 
   return render_template('driver_main.html', did = did, d_name = d_name)
+
+
+
+
+
+
 
 
 ############################# RESTAURANT ####################################
@@ -200,7 +218,7 @@ def restaurant_login():
   cursor = g.conn.execute("SELECT rid FROM restaurant WHERE r_name={name} AND r_phone={phone}".format(name=name, phone=phone))
   list_rid = []
   for result in cursor:
-      list_rid.append(result[0])
+    list_rid.append(result[0])
   cursor.close()
   rid = list_rid[0]
 
@@ -210,14 +228,73 @@ def restaurant_login():
 @app.route("/restaurant_main/<rid>")
 def restaurant_main(rid):
   rid = "'"+rid+"'"
-  cursor = g.conn.execute("SELECT r_name FROM restaurant WHERE rid={rid}".format(rid=rid))
+  #Get restaurant name from rid
+  cursor1 = g.conn.execute("SELECT r_name FROM restaurant WHERE rid={rid}".format(rid=rid))
   r_names = []
-  for result in cursor:
+  for result in cursor1:
       r_names.append(result[0])
-  cursor.close()
+  cursor1.close()
   r_name = r_names[0]
 
-  return render_template('restaurant_main.html', rid = rid, r_name = r_name)
+  #Get all orders for rid
+  cursor2 = g.conn.execute("SELECT oid, m_name, quantity FROM order_has_menu_item WHERE rid={rid}".format(rid=rid))
+  r_orders = []
+  for result in cursor2:
+    r_orders.append(result)
+  cursor2.close()
+  
+  unique_oid = [] #this will let us store just distinct oid's
+  incoming = []
+  pending = []
+  past = []
+  
+  #iterate through r_orders to get info for all incoming, pending, and past orders
+  for i in r_orders:
+    row = r_orders[i]
+    if row['oid'] in unique_oid: #if we already have the info for this oid, move on to the next one
+      continue
+    else:
+      unique_oid.append(row['oid'])
+      string_oid = "'"+row['oid']+"'"
+
+      #Get list of menu items and quantities for order
+      menu_items = []
+      for j in r_orders:
+        row2 = r_orders[j]
+        if row2['oid'] == row['oid']:
+          menu_item = {'menu_item': row2['menu_item'], 'qty': row2['quantity']}
+          menu_items.append(menu_item)
+
+      #Get all other info
+      cursor3 = g.conn.execute("SELECT O.total_price, O.status, C.c_name, D.d_name FROM order_fulfilled_by_driver O, places P, customer C, driver D WHERE O.oid={string_oid} AND O.did=D.did AND O.oid=P.oid AND P.cid=C.cid".format(string_oid=string_oid))
+      r_orderdetails = []
+      for result in cursor3:
+        r_orderdetails.append(result)
+      cursor3.close()
+
+      if r_orderdetails[0]['status'] == 'Processing' or r_orderdetails[0]['status'] == 'Preparing Food':
+        order_info = {
+          'oid': row['oid'],
+          'cid': r_orderdetails[0]['c_name'],
+          'total_price': r_orderdetails[0]['total_price']
+          'menu_items': menu_items
+        }
+        if r_orderdetails[0]['status'] == 'Processing':
+          incoming.append(order_info)
+        else:
+          pending.append(order_info)
+      else:
+        order_info = {
+          'oid': row['oid'],
+          'cid': r_orderdetails[0]['c_name'],
+          'total_price': r_orderdetails[0]['total_price']
+          'menu_items': menu_items,
+          'status' : r_orderdetails[0]['status'],
+          'driver': r_orderdetails[0]['d_name']
+        }
+        past.append(order_info)
+
+  return render_template('restaurant_main.html', rid = rid, r_name = r_name, incoming = incoming, pending = pending, past = past)
 
 if __name__ == "__main__":
   import click
