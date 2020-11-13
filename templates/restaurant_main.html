@@ -1,18 +1,7 @@
 <html>
-    <head>
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>
-            var rid = {{rid|tojson}}
-            var r_name= {{r_name|tojson}}
-
-            $(document).ready(function(){
-                $(".welcome").html(r_name + " - Here are your current orders:")
-            })
-        </script>
-    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Restaurant Portal</h2>
-        <h3 class="welcome"></h3>
+	<h3 class="welcome">{{r_name}} - View your orders:</h3>
     </body>
 </html>

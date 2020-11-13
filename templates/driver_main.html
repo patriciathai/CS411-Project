@@ -1,18 +1,7 @@
 <html>
-    <head>
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>
-            var did = {{did|tojson}}
-            var d_name= {{d_name|tojson}}
-
-            $(document).ready(function(){
-                $(".welcome").html("Welcome, " + d_name)
-            })
-        </script>
-    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Delivery Driver Portal</h2>
-        <h3 class="welcome"></h3>
+	<h3 class="welcome">Welcome, {{d_name}}</h3>
     </body>
 </html>

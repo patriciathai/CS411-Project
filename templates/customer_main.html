@@ -1,18 +1,7 @@
 <html>
-    <head>
-        <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>
-            var cid = {{cid|tojson}}
-            var c_name= {{c_name|tojson}}
-
-            $(document).ready(function(){
-                $(".welcome").html("Welcome, " + c_name)
-            })
-        </script>
-    </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-        <h3 class="welcome"></h3>
+	<h3 class="welcome">Welcome, {{c_name}}</h3>
     </body>
 </html>
