@@ -58,7 +58,6 @@ def home():
 
 
 
-
 ############################# CUSTOMER ####################################
 
 @app.route('/customer')
@@ -187,7 +186,38 @@ def customer_orders(cid):
   return render_template('customer_orders.html', upcoming=upcoming, past=past)
 
 
-
+@app.route('/<cid>/neworders')
+def customer_new_orders(cid):
+    string_cid = "'"+cid+"'"
+    cursor = g.conn.execute("SELECT zip from lives_in where cid={string_cid}".format(string_cid=string_cid));
+    zipcodes = []
+    for results in cursor:
+        zipcodes.append(results)
+        zipcode = int(results)
+        forward = zipcode+1
+        forward_2= zipcode+2
+        zipcodes.append(str(forward))
+        zipcodes.append(str(forward_2))
+    rids = []
+    cursor.close()
+    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip= {string_forward_again}").format(string_zip="'" + zipcodes[0] + "'",string_forward_zip= "'" + zipcodes[1] + "'" ,string_forward_again= "'"+zipcodes[2]+"'")
+    rids = []
+    for results in cursor2:
+        rids.append(results)
+    cursor2.close()
+    resturants = []
+    for rid in rids:
+        string_rid= "'"+rid+"'"
+        cursor3 = g.conn.execute("SELECT * from restaurant where rid={string_rid}".format(string_rid=string_rid))
+        for results in cursor3:
+            resturants.append(results)
+        cursor3.close()
+    
+    
+    
+    
+    
+    return render_template("customer_new_orders.html", resturants=resturants)
 
 
 
