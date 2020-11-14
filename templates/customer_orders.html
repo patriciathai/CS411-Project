@@ -1,0 +1,66 @@
+<html>
+    <head>
+    	<style>
+    		.title {
+			    text-decoration: underline;
+                text-transform: uppercase;
+                margin-top: 50px;
+		    }
+
+            .order_content {
+                border: 1px solid grey;
+                margin-top: 10px;
+                width: 500px;
+                padding: 5px;
+            }
+    	</style>
+    </head>
+    <body>
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Customer Portal</h2>
+        <h3>My Orders</h3>
+        <div class="upcoming">
+            <p class="title">Upcoming</p>
+            {% if not upcoming %}
+                <p>You have no upcoming orders.</p>
+            {% else %}
+                {% for order in upcoming %}
+                    <div class="order_content">
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Status: </strong>{{order['status']}}</p>
+                        <p><strong>Restaurant: </strong>{{order['r_name']}}</p>
+                        <p><strong>Phone: </strong>{{order['r_phone']}}</p>
+                        <p><strong>Menu Items: </strong></p>
+                        {% for item in order['menu_items'] %}
+                            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
+                        {% endfor %}
+                        <p><strong>Total: </strong>${{order['total_price']}}</p>
+                        {% if order['d_name'] != 'none' %}
+                            <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
+                            <p><strong>Phone: </strong>{{order['d_phone']}}</p>
+                        {% endif %}
+		            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="past">
+            <p class="title">Past Orders</p>
+            {% if not past %}
+                <p>You have no past orders.</p>
+            {% else %}
+                {% for order in past %}
+                    <div class="order_content">
+                        <p><strong>Order ID: </strong>{{order['oid']}}</p>
+                        <p><strong>Restaurant: </strong>{{order['r_name']}}</p>
+                        <p><strong>Menu Items: </strong></p>
+                        {% for item in order['menu_items'] %}
+                            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
+                        {% endfor %}
+                        <p><strong>Total: </strong>${{order['total_price']}}</p>
+                        <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </body>
+</html>

@@ -131,6 +131,61 @@ def customer_main(cid):
 
   return render_template('customer_main.html', cid = cid, c_name = c_name)
 
+@app.route("/<cid>/customer_orders")
+def customer_orders(cid):
+  string_cid = "'"+cid+"'"
+  
+  #Get all orders for cid
+  cursor = g.conn.execute("SELECT O.oid, O.m_name, O.quantity, O.rid FROM order_has_menu_item O, places P WHERE O.oid=P.oid AND P.cid={string_cid}".format(string_cid=string_cid))
+  c_orders = []
+  for result in cursor:
+    c_orders.append(result)
+  cursor.close()
+  
+  unique_oid = [] #this will let us store just distinct oid's
+  upcoming = []
+  past = []
+  
+  #iterate through c_orders to get info for all upcoming and past orders
+  for row in c_orders:
+    if row['oid'] in unique_oid: #if we already have the info for this oid, move on to the next one
+      continue
+    else:
+      unique_oid.append(row['oid'])
+      string_oid = "'"+row['oid']+"'"
+      string_rid = "'"+row['rid']+"'"
+
+      #Get list of menu items and quantities for order
+      menu_items = []
+      for row2 in c_orders:
+        if row2['oid'] == row['oid']:
+          menu_item = {'m_name': row2['m_name'], 'quantity': row2['quantity']}
+          menu_items.append(menu_item)
+
+      #Get all other info
+      cursor2 = g.conn.execute("SELECT O.total_price, O.status, R.r_name, R.r_phone, D.d_name, D.d_phone FROM order_fulfilled_by_driver O, restaurant R, driver D WHERE O.oid={string_oid} AND O.did=D.did AND R.rid={string_rid}".format(string_oid=string_oid, string_rid=string_rid))
+      c_orderdetails = []
+      for result in cursor2:
+        c_orderdetails.append(result)
+      cursor2.close()
+
+      order_info = {
+        'oid': row['oid'],
+        'r_name': c_orderdetails[0]['r_name'],
+        'r_phone': c_orderdetails[0]['r_phone'],
+        'total_price': c_orderdetails[0]['total_price'],
+        'menu_items': menu_items,
+        'status' : c_orderdetails[0]['status'],
+        'd_name': c_orderdetails[0]['d_name'],
+        'd_phone': c_orderdetails[0]['d_phone'],
+      }
+      if c_orderdetails[0]['status'] == 'Delivered':
+        past.append(order_info)
+      else:
+        upcoming.append(order_info)
+
+  return render_template('customer_orders.html', upcoming=upcoming, past=past)
+
 
 
 
@@ -205,8 +260,7 @@ def driver_main(did):
   ready = []
   past = []
   for row in d_orderdetails:
-    if row['status'] == 'Delivery On the Way':
-      order_info = {
+    order_info = {
       'oid': row['oid'],
       'status': row['status'],
       'r_name': row['r_name'],
@@ -216,23 +270,11 @@ def driver_main(did):
       'c_phone': row['c_phone'],
       'c_address': row['number'] + ' ' + row['street'] + ', Apt ' + row['apt'] + ', New York, NY ' + row['r_zip'],
       }
+    if row['status'] == 'Delivery On the Way':
       pending.append(order_info)
     elif row['status'] == 'Ready for Pickup':
-      order_info = {
-      'oid': row['oid'],
-      'status': row['status'],
-      'r_name': row['r_name'],
-      'r_address': row['r_number'] + ' ' + row['r_street'] + ', New York, NY ' + row['r_zip'],
-      'c_address': row['number'] + ' ' + row['street'] + ', Apt ' + row['apt'] + ', New York, NY ' + row['r_zip'],
-      }
       ready.append(order_info)
     else:
-      order_info = {
-      'oid': row['oid'],
-      'r_name': row['r_name'],
-      'r_address': row['r_number'] + ' ' + row['r_street'] + ', New York, NY ' + row['r_zip'],
-      'c_name': row['c_name'],
-      }
       past.append(order_info)
 
   return render_template('driver_main.html', did = did, d_name = d_name, pending=pending, ready=ready, past=past)
