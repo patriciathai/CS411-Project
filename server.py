@@ -206,10 +206,10 @@ def customer_new_orders(cid):
     rids = []
     cursor.close()
     
-    string_zip= "'"+zipcodes[0]+"'"
+    string_zip= "'"+ str(zipcodes[0])+"'"
     print('string_zip' + string_zip)
-    string_forward_zip ="'" + zipcodes[1] + "'"
-    string_forward_again = "'" + zipcodes[2] + "'"
+    string_forward_zip ="'" +str( zipcodes[1]) + "'"
+    string_forward_again = "'" + str(zipcodes[2])+ "'"
     
     cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
     rids = []
