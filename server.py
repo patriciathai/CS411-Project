@@ -121,8 +121,8 @@ def add_customer():
 
 @app.route("/customer_main/<cid>")
 def customer_main(cid):
-  cid = "'"+cid+"'"
-  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={cid}".format(cid=cid))
+  string_cid = "'"+cid+"'"
+  cursor = g.conn.execute("SELECT c_name FROM customer WHERE cid={string_cid}".format(string_cid=string_cid))
   c_names = []
   for result in cursor:
     c_names.append(result[0])
