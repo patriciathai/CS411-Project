@@ -192,23 +192,25 @@ def customer_new_orders(cid):
     cursor = g.conn.execute("SELECT zip from lives_in where cid={string_cid}".format(string_cid=string_cid));
     zipcodes = []
     for results in cursor:
-        zipcodes.append(results)
+        #zipcodes.append(r)
        # print('results: ' + results)
        # print(type(results))
         zipcode = int(results['zip'])
-    
+        print('zipcode: ' + zipcode)
         forward = zipcode+1
         forward_2= zipcode+2
-        zipcodes.append(str(forward))
-        zipcodes.append(str(forward_2))
+        zipcodes.append(zipcode)
+        zipcodes.append(forward)
+        zipcodes.append(forward_2)
     rids = []
     cursor.close()
     
-    string_zip= zipcodes[0]
-    string_forward_zip =zipcodes[1]
-    string_forward_again =zipcodes[2]
+    string_zip= "'"+zipcodes[0]+"'"
+    print('string_zip' + string_zip)
+    string_forward_zip ="'" + zipcodes[1] + "'"
+    string_forward_again = "'" + zipcodes[2] + "'"
     
-    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip= {string_forward_again}").format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again)
+    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
     rids = []
     for results in cursor2:
         rids.append(results['rid'])
