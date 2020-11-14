@@ -216,11 +216,13 @@ def customer_new_orders(cid):
     for results in cursor2:
         rids.append(results['rid'])
     cursor2.close()
+    
     resturants = []
     for rid in rids:
         string_rid= "'" + rid + "'"
         cursor3 = g.conn.execute("SELECT * from restaurant where rid={string_rid}".format(string_rid=string_rid))
         for results in cursor3:
+            print(results)
             resturants.append(results)
         cursor3.close()
     
