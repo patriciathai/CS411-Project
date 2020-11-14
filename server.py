@@ -196,7 +196,8 @@ def customer_new_orders(cid):
        # print('results: ' + results)
        # print(type(results))
         zipcode = int(results['zip'])
-        print('zipcode: ' + zipcode)
+        #print('zipcode: ' + zipcode)
+        
         forward = zipcode+1
         forward_2= zipcode+2
         zipcodes.append(zipcode)
