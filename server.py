@@ -203,14 +203,19 @@ def customer_new_orders(cid):
         zipcodes.append(str(forward_2))
     rids = []
     cursor.close()
-    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip= {string_forward_again}").format(string_zip="'" + zipcodes[0] + "'",string_forward_zip= "'" + zipcodes[1] + "'" ,string_forward_again= "'"+zipcodes[2]+"'")
+    
+    string_zip= zipcodes[0]
+    string_forward_zip =zipcodes[1]
+    string_forward_again =zipcodes[2]
+    
+    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip= {string_forward_again}").format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again)
     rids = []
     for results in cursor2:
         rids.append(results['rid'])
     cursor2.close()
     resturants = []
     for rid in rids:
-        string_rid= "'"+rid+"'"
+        string_rid= rid
         cursor3 = g.conn.execute("SELECT * from restaurant where rid={string_rid}".format(string_rid=string_rid))
         for results in cursor3:
             resturants.append(results)
