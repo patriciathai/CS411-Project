@@ -248,12 +248,17 @@ def customer_submit_order(string_cid,string_rid):
     f = request.form
     selected_menu_name = []
     select_menu_price = []
+    select_menu_quantity = []
     for name in f.keys():
-        for price in f.getlist(name):
+        for price,quantity in f.getlist(name):
             selected_menu_name.append(name)
             select_menu_price.append(float(price))
+            if quantity == '':
+                quantity = '0.0'
+            select_menu_quantity.append(quantity)
     print(selected_menu_name)
     print(select_menu_price)
+    print(select_menu_quantity)
     total_price = sum(select_menu_price)
     print(total_price)
     
