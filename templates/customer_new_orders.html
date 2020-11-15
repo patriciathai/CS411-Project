@@ -1,14 +1,20 @@
 <html>  
+    <body>
+        <h2> Available Restaurants Near Your Area: </h2>
+        <select>
 
-<body>
+            {% for r in  restaurants %}
+            <option value = {{r[0]}}> {{r[1]}} </option>
 
-{% for r in  resturants %}
-<p> {{r[0]}}    </p>
-<p> {{r[1]}} </p>
 
-<p>  {{r[2]}} </p>
-{% endfor %}
+            {% endfor %}
+        </select>
 
-</body>
 
+
+
+   
+    
+
+    </body>
 </html>

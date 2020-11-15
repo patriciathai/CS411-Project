@@ -217,20 +217,17 @@ def customer_new_orders(cid):
         rids.append(results['rid'])
     cursor2.close()
     
-    resturants = []
+    restaurants = []
     for rid in rids:
         string_rid= "'" + rid + "'"
         cursor3 = g.conn.execute("SELECT * from restaurant where rid={string_rid}".format(string_rid=string_rid))
         for results in cursor3:
             print(results)
-            resturants.append(results)
+            restaurants.append(results)
         cursor3.close()
+      
     
-    
-    
-    
-    
-    return render_template("customer_new_orders.html", resturants=resturants)
+    return render_template("customer_new_orders.html", restaurants=restaurants, )
 
 
 
