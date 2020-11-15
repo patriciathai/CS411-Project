@@ -189,15 +189,10 @@ def customer_orders(cid):
 @app.route('/<cid>/neworders')
 def customer_new_orders(cid):
     string_cid = "'"+cid+"'"
-    cursor = g.conn.execute("SELECT zip from lives_in where cid={string_cid}".format(string_cid=string_cid));
+    cursor = g.conn.execute("SELECT zip FROM lives_in WHERE cid={string_cid}".format(string_cid=string_cid))
     zipcodes = []
     for results in cursor:
-        #zipcodes.append(r)
-       # print('results: ' + results)
-       # print(type(results))
         zipcode = int(results['zip'])
-        #print('zipcode: ' + zipcode)
-        
         forward = zipcode+1
         forward_2= zipcode+2
         zipcodes.append(zipcode)
@@ -207,11 +202,10 @@ def customer_new_orders(cid):
     cursor.close()
     
     string_zip= "'"+ str(zipcodes[0])+"'"
-    print('string_zip' + string_zip)
     string_forward_zip ="'" +str( zipcodes[1]) + "'"
     string_forward_again = "'" + str(zipcodes[2])+ "'"
     
-    cursor2 = g.conn.execute("SELECT rid from located_in where zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
+    cursor2 = g.conn.execute("SELECT rid FROM located_in WHERE zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
     rids = []
     for results in cursor2:
         rids.append(results['rid'])
@@ -220,16 +214,26 @@ def customer_new_orders(cid):
     restaurants = []
     for rid in rids:
         string_rid= "'" + rid + "'"
-        cursor3 = g.conn.execute("SELECT * from restaurant where rid={string_rid}".format(string_rid=string_rid))
+        cursor3 = g.conn.execute("SELECT * FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
         for results in cursor3:
-            print(results)
+            #print(results)
             restaurants.append(results)
-        cursor3.close()
-      
+        cursor3.close()  
+        
+    return render_template("customer_new_orders.html", restaurants=restaurants)
+
+@app.route('/<cid>/menu_order', methods=['POST'])
+def customer_choose_menu(cid):
+    string_rid= "'" + rid + "'"
     
-    return render_template("customer_new_orders.html", restaurants=restaurants, )
-
-
+    # Get menu item from restaurant
+    cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid)".format(string_rid=string_rid))
+    menu = []
+    for item in cursor:
+        menu.append(item)
+    cursor.close()
+    
+    return render_template("customer_menu_order.html")
 
 
 
