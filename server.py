@@ -251,17 +251,17 @@ def customer_submit_order(string_cid,string_rid):
     select_menu_quantity = []
     m = 0
     for name in f.keys():
-        if m % 2 == 0:
-             selected_menu_name.append(name)
-             for price in f.getlist(name):
-                 select_menu_price.append(float(price))
-             m = m + 1
-        else:
-            for quantity in f.getlist(name):
-                if quantity == '0.0':
-                    quantity = '0.0'
+        selected_menu_name.append(name)
+        print(name)
+        for priceorquantity in f.getlist(name):
+            if m % 2 == 0:
+                select_menu_price.append(float(priceorquantity))
+                m = m + 1
+            else:
+                if priceorquantity == '':
+                    priceorquantity = '0.0'
                 
-                select_menu_quantity.append(quantity)
+                select_menu_quantity.append(priceorquantity)
                 m = 0
        # for price,quantity in f.getlist(name):
         #    selected_menu_name.append(name)
