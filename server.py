@@ -229,7 +229,7 @@ def customer_choose_menu(cid):
     string_cid = "'"+cid+"'"
     print("stringcid coming here" + string_cid)
     print(request.form)
-    string_rid= "'" + request.form['r[0]'] + "'"
+    string_rid= "'" + request.form['RestaurantList'] + "'"
     print("rid" + string_rid)
     # Get menu item from restaurant
     cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid)".format(string_rid=string_rid))
@@ -237,6 +237,8 @@ def customer_choose_menu(cid):
     for item in cursor:
         menu.append(item)
     cursor.close()
+    
+    print(menu)
     
     return render_template("customer_menu_order.html")
 
