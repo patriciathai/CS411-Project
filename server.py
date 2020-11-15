@@ -276,7 +276,7 @@ def customer_submit_order(string_cid,string_rid):
     oid = random.randrange(10000000, 99999999) 
     emptylist= []
     
-    string_oid = "'" + oid + "'"
+    string_oid = "'" + str(oid) + "'"
     cursor = g.conn.execute("SELECT * from order_has_menu_item where oid = {string_oid}".format(string_oid=string_oid))
     for results in cursor:
         emptylist.append(results)
@@ -284,7 +284,7 @@ def customer_submit_order(string_cid,string_rid):
          oid = random.randrange(10000000, 99999999) 
          emptylist= []
     
-         string_oid = "'" + oid + "'"
+         string_oid = "'" + str(oid) + "'"
          cursor = g.conn.execute("SELECT * from order_has_menu_item where oid = {string_oid}".format(string_oid=string_oid))
          for results in cursor:
               emptylist.append(results)
