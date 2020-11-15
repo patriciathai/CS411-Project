@@ -244,15 +244,16 @@ def customer_choose_menu(cid):
 
 @app.route('/<string_cid>/<string_rid>/submitorder',methods=['POST'])
 def customer_submit_order(string_cid,string_rid):
+    print(request.form)
     f = request.form
     selected_menu_name = []
     select_menu_price = []
     for name in f.keys():
         for price in f.getlist(name):
             selected_menu_name.append(name)
-            selected_menu_price.append(price)
+            select_menu_price.append(price)
     print(selected_menu_name)
-    print(selected_menu_price)
+    print(select_menu_price)
     total_price = sum(select_menu_price)
     print(total_price)
     

@@ -7,7 +7,7 @@
 <form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
 <h3> Name  |  Description | Price </h3> 
 {% for m in menu %}
-   <input type="checkbox" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"     onchange="document.getElementById('{{m[1]}}').disabled = !this.checked;"> 
+   <input type="checkbox" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"     onclick="document.getElementById('{{m[1]}}').disabled = !this.checked;"> 
    
   <label for="{{m[0]}}"> Name: {{m[0]}}  <br> Description: {{m[1]}} <br>  Price: {{m[2]}} </label>  
   <br><br>
