@@ -259,20 +259,18 @@ def customer_submit_order(string_cid,string_rid):
                 m = m + 1
             else:
                 if priceorquantity == '':
-                    priceorquantity = '0.0'
+                    priceorquantity = '0'
                 
-                select_menu_quantity.append(priceorquantity)
+                select_menu_quantity.append(float(priceorquantity))
                 m = 0
-       # for price,quantity in f.getlist(name):
-        #    selected_menu_name.append(name)
-         #   select_menu_price.append(float(price))
-          #  if quantity == '':
-           #     quantity = '0.0'
-            #select_menu_quantity.append(quantity)
+    total_price = 0
+    for i in range(len(select_menu_price)):
+        total_price += select_menu_price[i] * select_menu_quantity[i]
+        
     print(selected_menu_name)
     print(select_menu_price)
     print(select_menu_quantity)
-    total_price = sum(select_menu_price)
+      #  total_price = sum(select_menu_price)
     print(total_price)
     
     return render_template('<h1> Reahced here </h1>')
