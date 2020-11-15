@@ -251,7 +251,7 @@ def customer_submit_order(string_cid,string_rid):
     for name in f.keys():
         for price in f.getlist(name):
             selected_menu_name.append(name)
-            select_menu_price.append(price)
+            select_menu_price.append(int(price))
     print(selected_menu_name)
     print(select_menu_price)
     total_price = sum(select_menu_price)

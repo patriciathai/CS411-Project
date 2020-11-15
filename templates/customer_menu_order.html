@@ -2,7 +2,7 @@
 
 <body>
 
-<h3> Following are the menu items from your selected resturant </h3>
+<h3> Following are the menu items from your selected resturant. Please chose the quantity for your selected items </h3>
 <br>
 <form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
 <h3> Name  |  Description | Price </h3> 
@@ -11,8 +11,8 @@
    
   <label for="{{m[0]}}"> Name: {{m[0]}}  <br> Description: {{m[1]}} <br>  Price: {{m[2]}} </label>  
   <br><br>
-<label for="{{m[1]}}">Quantity (between 1 and 10):</label>
-<input type="number" id="{{m[1]}}" name="{{m[1]}}" min="1" max="10">
+<label for="{{m[1]}}">Quantity (between 0 and 10):</label>
+<input type="number" id="{{m[1]}}" name="{{m[1]}}" min="0" max="10">
   <br><br>
 
 {% endfor %}
