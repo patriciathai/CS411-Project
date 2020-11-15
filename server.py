@@ -225,13 +225,15 @@ def customer_new_orders(cid):
 @app.route('/<cid>/menu_order', methods=['POST'])
 def customer_choose_menu(cid):
     #string_rid= "'" + rid + "'"
-    
+    string_cid = "'"+cid+"'"
+    string_rid= "'" request.form['r[0]'] + "'"
+    print("rid" + string_rid)
     # Get menu item from restaurant
-    #cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid)".format(string_rid=string_rid))
-    #menu = []
-    #for item in cursor:
-        #menu.append(item)
-    #cursor.close()
+    cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid)".format(string_rid=string_rid))
+    menu = []
+    for item in cursor:
+        menu.append(item)
+    cursor.close()
     
     return render_template("customer_menu_order.html")
 

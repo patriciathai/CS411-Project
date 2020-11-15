@@ -2,10 +2,10 @@
     <body>
         <h2> Available Restaurants Near Your Area: </h2>
         <form>
-        <select>
+        <select name = "RestaurantList">
 
             {% for r in  restaurants %}
-            <option value = {{r[0]}}> {{r[1]}} </option>
+            <option value = "{{r[0]}}">{{r[1]}}</option>
 
             {% endfor %}
         </select>
