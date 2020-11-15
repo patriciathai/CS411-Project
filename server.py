@@ -222,7 +222,7 @@ def customer_new_orders(cid):
     
     return render_template("customer_new_orders.html", restaurants=restaurants,cid=cid)
 
-@app.route('/<cid>/menu_order', methods=['POST'])
+@app.route('/<cid>/menu_order')
 def customer_choose_menu(cid):
     #string_rid= "'" + rid + "'"
     string_cid = "'"+cid+"'"

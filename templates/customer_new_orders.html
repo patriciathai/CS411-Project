@@ -1,7 +1,7 @@
 <html>  
     <body>
         <h2> Available Restaurants Near Your Area: </h2>
-        <form action="/{{cid}}/menu_order" method = "POST">
+        <form action="/{{cid}}/menu_order">
         <select name = "RestaurantList">
 
             {% for r in  restaurants %}
@@ -9,7 +9,8 @@
 
             {% endfor %}
         </select>
-         <button type="submit" value="Submit">Submit<button>
+        <br>
+         <button type="submit" value="Submit">Submit</button>
         </form>
     
        
