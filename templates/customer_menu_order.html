@@ -7,12 +7,12 @@
 <form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
 <h3> Name  |  Description | Price </h3> 
 {% for m in menu %}
-  <!-- <input type="checkbox" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"     onclick="document.getElementById('{{m[1]}}').disabled = !this.checked;">  -->
+   <input type="hidden" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"> 
    
   <label for="{{m[0]}}"> Name: {{m[0]}}  <br> Description: {{m[1]}} <br>  Price: {{m[2]}} </label>  
   <br><br>
-<label for="{{m[0]}}">Quantity (between 0 and 10):</label>
-<input type="number" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}" min="0" max="10">
+<label for="{{m[1]}}">Quantity (between 0 and 10):</label>
+<input type="number" id="{{m[1]}}" name="{{m[1]}}" min="0" max="10">
   <br><br>
 
 {% endfor %}
