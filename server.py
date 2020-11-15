@@ -9,6 +9,7 @@ A debugger such as "pdb" may be helpful for debugging.
 Read about it online.
 """
 import os
+import random
   # accessible as a variable in index.html:
 from sqlalchemy import *
 from sqlalchemy.pool import NullPool
@@ -272,7 +273,23 @@ def customer_submit_order(string_cid,string_rid):
     print(select_menu_quantity)
       #  total_price = sum(select_menu_price)
     print(total_price)
+    oid = random.randrange(10000000, 99999999) 
+    emptylist= []
     
+    string_oid = "'" + oid + "'"
+    cursor = g.conn.execute("SELECT * from order_has_menu_item where oid = {string_oid}".format(string_oid=string_oid))
+    for results in cursor:
+        emptylist.append(results)
+    if len(emptylist) != 0:
+         oid = random.randrange(10000000, 99999999) 
+         emptylist= []
+    
+         string_oid = "'" + oid + "'"
+         cursor = g.conn.execute("SELECT * from order_has_menu_item where oid = {string_oid}".format(string_oid=string_oid))
+         for results in cursor:
+              emptylist.append(results)
+    print(string_oid)
+        
     return render_template('<h1> Reahced here </h1>')
 ############################# DRIVER ####################################
 
