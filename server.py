@@ -232,7 +232,7 @@ def customer_choose_menu(cid):
     string_rid= "'" + request.form['RestaurantList'] + "'"
     print("rid" + string_rid)
     # Get menu item from restaurant
-    cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid)".format(string_rid=string_rid))
+    cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid}".format(string_rid=string_rid))
     menu = []
     for item in cursor:
         menu.append(item)
