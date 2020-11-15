@@ -227,6 +227,8 @@ def customer_choose_menu(cid):
     #string_rid= "'" + rid + "'"
     print("coming here")
     string_cid = "'"+cid+"'"
+    print("stringcid coming here" + string_cid)
+    print(request.form)
     string_rid= "'" + request.form['r[0]'] + "'"
     print("rid" + string_rid)
     # Get menu item from restaurant
