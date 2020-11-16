@@ -247,7 +247,7 @@ def customer_choose_menu(cid):
 def customer_submit_order(string_cid,string_rid):
     print(request.form)
     f = request.form
-    print(f[1])
+    
     selected_menu_name = []
     select_menu_price = []
     select_menu_quantity = []
@@ -291,12 +291,12 @@ def customer_submit_order(string_cid,string_rid):
               emptylist.append(results)
     print(string_oid)
     
-    #oid = string_oid
+    oid = string_oid
     #for m in range(len(selected_menu_name)):
         #m_name = 
     #quantity =
-    #rid = f[1] 
-    #g.conn.execute('INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)', oid, m_name, quantity, rid)
+    rid = f[1] 
+    g.conn.execute('INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)', oid, m_name, quantity, rid)
         
     return render_template('<h1> reach here </h1>')
 ############################# DRIVER ####################################
