@@ -300,7 +300,7 @@ def customer_submit_order(string_cid,string_rid):
            
             g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)",oids, m_name, quantity,rids)
    # string_cid = "'" + string_cid + "'"
-    g.conn.execute("INSERT INTO places VALUES ($s, %s)",cids,oids)
+    g.conn.execute("INSERT INTO places VALUES (%s, %s)",cids,oids)
     #total_price = "'" + total_price +  "'"
     g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
     
