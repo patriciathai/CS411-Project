@@ -131,7 +131,7 @@ def customer_main(cid):
 
   return render_template('customer_main.html', cid = cid, c_name = c_name)
 
-@app.route("/<cid>/customer_orders")
+@app.route("/<cid>/customer_orderhist")
 def customer_orders(cid):
   string_cid = "'"+cid+"'"
   
@@ -163,7 +163,7 @@ def customer_orders(cid):
           menu_items.append(menu_item)
 
       #Get all other info
-      cursor2 = g.conn.execute("SELECT O.total_price, O.status, R.r_name, R.r_phone, D.d_name, D.d_phone FROM order_fulfilled_by_driver O, restaurant R, driver D WHERE O.oid={string_oid} AND O.did=D.did AND R.rid={string_rid}".format(string_oid=string_oid, string_rid=string_rid))
+      cursor2 = g.conn.execute("SELECT A.c_rating, O.total_price, O.status, R.r_name, R.r_phone, D.d_name, D.d_phone FROM rates A, order_fulfilled_by_driver O, restaurant R, driver D WHERE A.rid=R.rid AND A.cid={string_cid} O.oid={string_oid} AND O.did=D.did AND R.rid={string_rid}".format(string_oid=string_oid, string_rid=string_rid, string_cid=string_cid))
       c_orderdetails = []
       for result in cursor2:
         c_orderdetails.append(result)
@@ -171,6 +171,7 @@ def customer_orders(cid):
 
       order_info = {
         'oid': row['oid'],
+        'rid': row['rid'],
         'r_name': c_orderdetails[0]['r_name'],
         'r_phone': c_orderdetails[0]['r_phone'],
         'total_price': c_orderdetails[0]['total_price'],
@@ -178,13 +179,14 @@ def customer_orders(cid):
         'status' : c_orderdetails[0]['status'],
         'd_name': c_orderdetails[0]['d_name'],
         'd_phone': c_orderdetails[0]['d_phone'],
+        'rating': c_orderdetails[0]['c_rating']
       }
       if c_orderdetails[0]['status'] == 'Delivered':
         past.append(order_info)
       else:
         upcoming.append(order_info)
 
-  return render_template('customer_orders.html', upcoming=upcoming, past=past)
+  return render_template('customer_orderhist.html', cid=cid, upcoming=upcoming, past=past)
 
 
 @app.route('/<cid>/neworders')
@@ -314,6 +316,15 @@ def customer_submit_order(string_cid,string_rid):
     print(card_number) 
     
     return render_template("order_complete.html",card_number=card_number,cids=cids,total_price=total_price,string_oid=string_oid)
+
+
+
+
+
+
+
+
+
 ############################# DRIVER ####################################
 
 @app.route('/driver')
