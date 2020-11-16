@@ -181,6 +181,7 @@ def customer_orders(cid):
         'd_phone': c_orderdetails[0]['d_phone'],
       }
 
+      #Get rating for restaurant, if customer hasn't rated restaurant yet, return 'none'
       cursor3 = g.conn.execute("SELECT c_rating FROM rates WHERE cid={string_cid} AND rid={string_rid}".format(string_cid=string_cid, string_rid=string_rid))
       if not cursor3:
           order_info.update({'rating': 'none'})
@@ -201,6 +202,42 @@ def customer_orders(cid):
 
   return render_template('customer_orderhist.html', cid=cid, upcoming=upcoming, past=past)
 
+@app.route("/<cid>/<rid>/add_rating", methods=['POST'] )
+def update_status_delivered(cid, rid):
+  rating = request.form['output']
+  g.conn.execute('INSERT INTO rates VALUES (%s, %s, %s)', cid, rid, rating)
+
+  cursor = g.conn.execute("SELECT rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
+  r_rating = []
+  for result in cursor:
+    r_rating.append(result)
+  cursor.close()
+
+  new_rating = (r_rating[0] + rating)/2.0
+  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}', format(new_rating=new_rating, string_rid=string_rid))
+  
+  url = '/' + cid + '/customer_orderhist'
+  return redirect(url)
+
+@app.route("/<cid>/<rid>/update_rating", methods=['POST'] )
+def update_status_delivered(cid, rid):
+  rating = request.form['output']
+  string_cid = "'"+cid+"'"
+  string_rid = "'"+rid+"'"
+
+  g.conn.execute('UPDATE rates SET c_rating={rating} WHERE cid={string_cid} AND rid={string_rid}'.format(rating=rating,string_cid=string_cid,string_rid=string_rid))
+
+  cursor = g.conn.execute("SELECT rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
+  r_rating = []
+  for result in cursor:
+    r_rating.append(result)
+  cursor.close()
+
+  new_rating = (r_rating[0] + rating)/2.0
+  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}', format(new_rating=new_rating, string_rid=string_rid))
+  
+  url = '/' + cid + '/customer_orderhist'
+  return redirect(url)
 
 @app.route('/<cid>/neworders')
 def customer_new_orders(cid):

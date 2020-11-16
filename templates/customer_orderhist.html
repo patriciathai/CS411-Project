@@ -15,14 +15,22 @@
             }
         </style>
         <script>
-            window.onload = (event) => {
+            function btn_click() {
+                var x = document.getElementById("update_form");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            window.onload = (event) => {              
                 var slider = document.getElementById('slider');
                 var output = document.getElementById("slider_output");
                 output.innerHTML = document.getElementById("slider").value;
                 slider.oninput = function() {
                     output.innerHTML = this.value;
                 }
-            };
+            }
         </script>
     </head>
     <body>
@@ -70,16 +78,23 @@
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
                         <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
-			{% if order['rating'] != 'none' %}
-                        	<p><strong>Your Rating: </strong>{{order['rating']}}</p>
-			{% else %}	
+			            {% if order['rating'] != 'none' %}
+                            <p><strong>Your Rating for this Restaurant: </strong>{{order['rating']}}</p>
+                            <button class="update_btn" onclick="btn_click()">Update Rating</button>
+                            <form style="display: none;" id="update_form" method="POST" action="/{{cid}}/{{order['rid']}}/update_rating">
+                                <label for="slider">Rate this restaurant: </label>
+                                <input id="slider" type="range" name="slider" min="0" max="5" step="0.5" value="2.5">
+                                <output name="output" id="slider_output" for="slider"></output><br>
+                                <input class="save_btn" type="submit" value="Submit">
+                            </form>
+			            {% else %}	
                         <form method="POST" action="/{{cid}}/{{order['rid']}}/add_rating">
                             <label for="slider">Rate this restaurant: </label>
                             <input id="slider" type="range" name="slider" min="0" max="5" step="0.5" value="2.5">
-                            <output id="slider_output" for="slider"></output><br>
+                            <output name="output" id="slider_output" for="slider"></output><br>
                             <input class="save_btn" type="submit" value="Submit">
                         </form>
-			{% endif %}
+			            {% endif %}
                     </div>
                 {% endfor %}
             {% endif %}
