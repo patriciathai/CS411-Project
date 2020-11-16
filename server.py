@@ -301,12 +301,12 @@ def customer_submit_order(string_cid,string_rid):
         m_name =  selected_menu_name[i]
         quantity = int(select_menu_quantity[i])
        # string_rid = "'" + string_rid + "'"
-       oids = str(oid)
+        oids = str(oid)
         g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)",oids, m_name, quantity, string_rid)
    # string_cid = "'" + string_cid + "'"
     g.conn.execute("INSERT INTO places VALUES ($s, %s)",string_cid,string_oid)
     #total_price = "'" + total_price +  "'"
-    g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",string_oid,total_price,"'Processing'","'none'")
+    g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
     
     card_number = []
     cursor = g.conn.execute("SELECT card_number from pays_with where  cid={{string_cid}}",string_cid=string_cid)
