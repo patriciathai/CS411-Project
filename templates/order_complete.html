@@ -1,0 +1,22 @@
+<html>  
+
+<body> 
+
+<h3> Your Reciept:     </h3>
+<p>Order id: {{string_oid}}   </p>
+<p>Total price: {{total_price}} </p>
+
+{% for number in card_number %}
+<p> Payment Card Number: {{number}} </p>
+
+
+{% endfor %}
+<form action="/{{cid}}/customer_orders">
+
+ <button type="submit" value="Submit">Main Menu</button>
+
+</form>
+</body>
+
+
+</html>

@@ -304,7 +304,15 @@ def customer_submit_order(string_cid,string_rid):
         g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)", string_oid, m_name, quantity, string_rid)
     string_cid = "'" + string_cid + "'"
     g.conn.execute("INSERT INTO places VALUES ($s, %s)",string_cid,string_oid)
-    return render_template('<h1> reach here </h1>')
+    total_price = "'" + total_price +  "'"
+    g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",string_oid,total_price,"'Processing'","'none'")
+    
+    card_number = []
+    cursor = g.conn.execute("SELECT card_number from pays_with where  cid={{string_cid}}",string_cid=string_cid)
+    for result in card_number:
+        card_number.append(result['card_number'])
+    print(card_number) 
+    return render_template("order_complete.html",card_number=card_number,string_cid=string_cid,total_price=total_price,string_oid=string_oid)
 ############################# DRIVER ####################################
 
 @app.route('/driver')
