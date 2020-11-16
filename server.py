@@ -290,16 +290,17 @@ def customer_submit_order(string_cid,string_rid):
          for results in cursor:
               emptylist.append(results)
     print(string_oid)
-    
+    oids = str(oid)
+    cids = string_cid.replace("'","")
     for i in range(len(selected_menu_name)): 
         if int(select_menu_quantity[i]) != 0: 
             m_name =  selected_menu_name[i]
             quantity = int(select_menu_quantity[i])
             rids = string_rid.replace("'","")
-            oids = str(oid)
+           
             g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)",oids, m_name, quantity,rids)
    # string_cid = "'" + string_cid + "'"
-    g.conn.execute("INSERT INTO places VALUES ($s, %s)",string_cid,string_oid)
+    g.conn.execute("INSERT INTO places VALUES ($s, %s)",cids,oids)
     #total_price = "'" + total_price +  "'"
     g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
     
