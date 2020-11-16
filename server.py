@@ -163,7 +163,7 @@ def customer_orders(cid):
           menu_items.append(menu_item)
 
       #Get all other info
-      cursor2 = g.conn.execute("SELECT A.c_rating, O.total_price, O.status, R.r_name, R.r_phone, D.d_name, D.d_phone FROM rates A, order_fulfilled_by_driver O, restaurant R, driver D WHERE A.rid=R.rid AND A.cid={string_cid} O.oid={string_oid} AND O.did=D.did AND R.rid={string_rid}".format(string_oid=string_oid, string_rid=string_rid, string_cid=string_cid))
+      cursor2 = g.conn.execute("SELECT O.total_price, O.status, R.r_name, R.r_phone, D.d_name, D.d_phone FROM order_fulfilled_by_driver O, restaurant R, driver D WHERE O.oid={string_oid} AND O.did=D.did AND R.rid={string_rid}".format(string_oid=string_oid, string_rid=string_rid))
       c_orderdetails = []
       for result in cursor2:
         c_orderdetails.append(result)
@@ -179,8 +179,21 @@ def customer_orders(cid):
         'status' : c_orderdetails[0]['status'],
         'd_name': c_orderdetails[0]['d_name'],
         'd_phone': c_orderdetails[0]['d_phone'],
-        'rating': c_orderdetails[0]['c_rating']
       }
+
+      cursor3 = g.conn.execute("SELECT c_rating FROM rates WHERE cid={string_cid} AND rid={string_rid}".format(string_cid=string_cid, string_rid=string_rid))
+      if not cursor3:
+          order_info.update({'rating': 'none'})
+      else:
+          ratings = []
+          for result in cursor3:
+              ratings.append(result)
+          if not ratings:
+              order_info.update({'rating': 'none'})
+          else:
+            order_info.update({'rating': ratings[0]['c_rating'] })
+      cursor3.close()
+
       if c_orderdetails[0]['status'] == 'Delivered':
         past.append(order_info)
       else:

@@ -70,13 +70,16 @@
                         {% endfor %}
                         <p><strong>Total: </strong>${{order['total_price']}}</p>
                         <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
-                        <p><strong>Your Rating: </strong>{{order['rating']}}</p>
+			{% if order['rating'] != 'none' %}
+                        	<p><strong>Your Rating: </strong>{{order['rating']}}</p>
+			{% else %}	
                         <form method="POST" action="/{{cid}}/{{order['rid']}}/add_rating">
                             <label for="slider">Rate this restaurant: </label>
                             <input id="slider" type="range" name="slider" min="0" max="5" step="0.5" value="2.5">
                             <output id="slider_output" for="slider"></output><br>
                             <input class="save_btn" type="submit" value="Submit">
                         </form>
+			{% endif %}
                     </div>
                 {% endfor %}
             {% endif %}
