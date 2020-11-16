@@ -291,13 +291,19 @@ def customer_submit_order(string_cid,string_rid):
               emptylist.append(results)
     print(string_oid)
     
-    oid = string_oid
+    #oid = string_oid
     #for m in range(len(selected_menu_name)):
         #m_name = 
     #quantity =
-    rid = f[1] 
-    g.conn.execute('INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)', oid, m_name, quantity, rid)
+    #rid = f[1] 
+    for i in range(len(selected_menu_name)): 
         
+        m_name = "'" + selected_menu_name[i] + "'"
+        quantity = "'" + str(int(select_menu_quantity[i])) + "'"
+        string_rid = "'" + string_rid + "'"
+        g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)", string_oid, m_name, quantity, string_rid)
+    string_cid = "'" + string_cid + "'"
+    g.conn.execute("INSERT INTO places VALUES ($s, %s)",string_cid,string_oid)
     return render_template('<h1> reach here </h1>')
 ############################# DRIVER ####################################
 
