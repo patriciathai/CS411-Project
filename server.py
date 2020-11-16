@@ -299,12 +299,12 @@ def customer_submit_order(string_cid,string_rid):
     for i in range(len(selected_menu_name)): 
         
         m_name = "'" + selected_menu_name[i] + "'"
-        quantity = "'" + str(int(select_menu_quantity[i])) + "'"
+        quantity = int(select_menu_quantity[i])
         string_rid = "'" + string_rid + "'"
         g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)", string_oid, m_name, quantity, string_rid)
     string_cid = "'" + string_cid + "'"
     g.conn.execute("INSERT INTO places VALUES ($s, %s)",string_cid,string_oid)
-    total_price = "'" + total_price +  "'"
+    #total_price = "'" + total_price +  "'"
     g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",string_oid,total_price,"'Processing'","'none'")
     
     card_number = []
@@ -312,6 +312,7 @@ def customer_submit_order(string_cid,string_rid):
     for result in card_number:
         card_number.append(result['card_number'])
     print(card_number) 
+    #total_price = "'" + total_price +  "'"
     return render_template("order_complete.html",card_number=card_number,string_cid=string_cid,total_price=total_price,string_oid=string_oid)
 ############################# DRIVER ####################################
 
