@@ -307,12 +307,14 @@ def customer_submit_order(string_cid,string_rid):
     g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
     
     card_number = []
-    print(string_cid)
+   
     print(cids)
-    cursor = g.conn.execute("SELECT card_number from pays_with where cid = {cids}".format(cids=cids))
-    for result in card_number:
+  #  customer_id = "'" + cids + "'"
+    cursor = g.conn.execute("SELECT card_number from pays_with where cid = {string_cid}".format(string_cid=string_cid))
+    for result in cursor:
         print(result)
         card_number.append(result[0])
+    cursor.close()
     print(card_number) 
     
     return render_template("order_complete.html",card_number=card_number,cids=cids,total_price=total_price,string_oid=string_oid)
