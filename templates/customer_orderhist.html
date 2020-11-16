@@ -17,11 +17,9 @@
         <script>
             function btn_click() {
                 var x = document.getElementById("update_form");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
+                x.style.display = "block";
+		var y = document.getElementById("update_btn");
+                y.style.display = "none";
             }
             window.onload = (event) => {              
                 var slider = document.getElementById('slider');
@@ -80,15 +78,15 @@
                         <p><strong>Delivery Driver: </strong>{{order['d_name']}}</p>
 			            {% if order['rating'] != 'none' %}
                             <p><strong>Your Rating for this Restaurant: </strong>{{order['rating']}}</p>
-                            <button class="update_btn" onclick="btn_click()">Update Rating</button>
-                            <form style="display: none;" id="update_form" method="POST" action="/{{cid}}/{{order['rid']}}/update_rating">
+                            <button id="update_btn" onclick="btn_click()">Update Rating</button>
+                            <form style="display: none;" id="update_form" method="POST" action="/update_rating/{{cid}}/{{order['rid']}}">
                                 <label for="slider">Rate this restaurant: </label>
                                 <input id="slider" type="range" name="slider" min="0" max="5" step="0.5" value="2.5">
                                 <output name="output" id="slider_output" for="slider"></output><br>
                                 <input class="save_btn" type="submit" value="Submit">
                             </form>
 			            {% else %}	
-                        <form method="POST" action="/{{cid}}/{{order['rid']}}/add_rating">
+                        <form method="POST" action="/add_rating/{{cid}}/{{order['rid']}}">
                             <label for="slider">Rate this restaurant: </label>
                             <input id="slider" type="range" name="slider" min="0" max="5" step="0.5" value="2.5">
                             <output name="output" id="slider_output" for="slider"></output><br>

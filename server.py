@@ -131,7 +131,7 @@ def customer_main(cid):
 
   return render_template('customer_main.html', cid = cid, c_name = c_name)
 
-@app.route("/<cid>/customer_orderhist")
+@app.route("/customer_orderhist/<cid>")
 def customer_orders(cid):
   string_cid = "'"+cid+"'"
   
@@ -202,26 +202,27 @@ def customer_orders(cid):
 
   return render_template('customer_orderhist.html', cid=cid, upcoming=upcoming, past=past)
 
-@app.route("/<cid>/<rid>/add_rating", methods=['POST'] )
-def update_status_delivered(cid, rid):
-  rating = request.form['output']
+@app.route('/add_rating/<cid>/<rid>', methods=['POST'] )
+def add_rating(cid, rid):
+  rating = request.form['slider']
   g.conn.execute('INSERT INTO rates VALUES (%s, %s, %s)', cid, rid, rating)
 
+  string_rid = "'"+rid+"'"
   cursor = g.conn.execute("SELECT rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
   r_rating = []
   for result in cursor:
     r_rating.append(result)
   cursor.close()
 
-  new_rating = (r_rating[0] + rating)/2.0
-  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}', format(new_rating=new_rating, string_rid=string_rid))
+  new_rating = (float(r_rating[0]['rating']) + float(rating))/2.0
+  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}'.format(new_rating=new_rating, string_rid=string_rid))
   
-  url = '/' + cid + '/customer_orderhist'
+  url = '/customer_orderhist/'+cid
   return redirect(url)
 
-@app.route("/<cid>/<rid>/update_rating", methods=['POST'] )
-def update_status_delivered(cid, rid):
-  rating = request.form['output']
+@app.route('/update_rating/<cid>/<rid>', methods=['POST'] )
+def update_rating(cid, rid):
+  rating = request.form['slider']
   string_cid = "'"+cid+"'"
   string_rid = "'"+rid+"'"
 
@@ -233,10 +234,10 @@ def update_status_delivered(cid, rid):
     r_rating.append(result)
   cursor.close()
 
-  new_rating = (r_rating[0] + rating)/2.0
-  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}', format(new_rating=new_rating, string_rid=string_rid))
+  new_rating = (float(r_rating[0]['rating']) + float(rating))/2.0
+  g.conn.execute('UPDATE restaurant SET rating={new_rating} WHERE rid={string_rid}'.format(new_rating=new_rating, string_rid=string_rid))
   
-  url = '/' + cid + '/customer_orderhist'
+  url = '/customer_orderhist/'+cid
   return redirect(url)
 
 @app.route('/<cid>/neworders')
