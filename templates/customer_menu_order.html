@@ -40,7 +40,11 @@
       {% for m in menu %}
         <div class='item'>
           <input type="hidden" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"> 
-          <label for="{{m[0]}}"><strong>{{m[0]}}</strong><br>{{m[1]}}<br>${{m[2]}}</label>
+	  <label for="{{m[0]}}"><strong>{{m[0]}}</strong><br>
+		  {% if m['description'] != "None" %}
+		  	{{m['description']}}<br>
+		  {% endif %}
+		  ${{m[2]}}</label>
           <br><br>
           <label style="display: none;" class="hide" for="{{m[0]}}">Select Quantity:</label>
           <input style="display: none;" class="hide" type="number" id="{{m[0]}}" name="{{m[0]}}" min="0" max="10">

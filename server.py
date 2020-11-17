@@ -329,7 +329,7 @@ def customer_choose_menu(cid, rid):
   
   #print(menu)
   
-  return render_template("customer_menu_order.html", info=info[0], menu=menu, rid=, cid=cid)
+  return render_template("customer_menu_order.html", info=info[0], menu=menu, rid=rid, cid=cid)
 
 @app.route('/<cid>/<rid>/submitorder', methods=['POST'])
 def customer_submit_order(cid,rid):
@@ -390,10 +390,10 @@ def customer_submit_order(cid,rid):
   g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)", oids, total_price,"Processing","none")
   
   customer_info = []
-  cursor = g.conn.execute("SELECT C.c_name, L.number, L.street, L.apt, L.zip, P.card_number from customer C, lives_in L, pays_with P where C.cid = P.cid AND L.cid = P.cid AND P.cid={string_cid}".format(string_cid=string_cid))
-  for result in cursor:
-    customer_info.append(result[0])
-  cursor.close()
+  cursor2 = g.conn.execute("SELECT C.c_name, L.number, L.street, L.apt, L.zip, P.card_number from customer C, lives_in L, pays_with P where C.cid = P.cid AND L.cid = P.cid AND P.cid={string_cid}".format(string_cid=string_cid))
+  for result in cursor2:
+    customer_info.append(result)
+  cursor2.close()
   card_number = customer_info[0]['card_number']
   
   return render_template("order_complete.html", card_number=card_number[-4:], cids=cids, total_price=total_price, oid=oid, menu_items=menu_items, customer_info=customer_info[0])
