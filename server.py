@@ -384,9 +384,9 @@ def customer_submit_order(string_cid,string_rid):
 
 ############################# DRIVER ####################################
 
-@app.route('/driver')
-def get_driver():
-  return render_template('driver.html')
+@app.route('/driver/<success>')
+def get_driver(success):
+  return render_template('driver.html', success=success)
 
 @app.route("/driver_login", methods=['POST'] )
 def driver_login():
@@ -398,12 +398,16 @@ def driver_login():
   cursor = g.conn.execute("SELECT did FROM driver WHERE d_email={email} AND d_name={name}".format(email=email, name=name))
   list_did = []
   for result in cursor:
-      list_did.append(result[0])
+    list_did.append(result[0])
   cursor.close()
-  did = list_did[0]
-
-  url = '/driver_main/' + did
-  return redirect(url)
+  if not list_did:
+    success = 'False'
+    url = '/driver/' + success
+    return redirect(url)
+  else:
+    did = list_did[0]
+    url = '/customer_main/' + did
+    return redirect(url)
 
 @app.route("/driver_signup")
 def driver_signup():
@@ -494,9 +498,9 @@ def update_status_otw(did, oid):
 
 ############################# RESTAURANT ####################################
 
-@app.route('/restaurant')
-def get_restaurant():
-  return render_template('restaurant.html')
+@app.route('/restaurant/<success>')
+def get_restaurant(success):
+  return render_template('restaurant.html', success=success)
 
 @app.route("/restaurant_login", methods=['POST'] )
 def restaurant_login():
@@ -510,10 +514,14 @@ def restaurant_login():
   for result in cursor:
     list_rid.append(result[0])
   cursor.close()
-  rid = list_rid[0]
-
-  url = '/restaurant_main/' + rid
-  return redirect(url)
+  if not list_rid:
+    success = 'False'
+    url = '/restaurant/' + success
+    return redirect(url)
+  else:
+    rid = list_rid[0]
+    url = '/restaurant_main/' + rid
+    return redirect(url)
 
 @app.route("/restaurant_main/<rid>")
 def restaurant_main(rid):
