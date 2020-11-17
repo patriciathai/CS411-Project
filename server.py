@@ -270,7 +270,7 @@ def customer_new_orders(cid, cfilter):
   cursor4.close()
   
   if (cfilter == 'cfilter'):
-    cuisine = "'" + request.form('menu1') + "'"
+    cuisine = "'" + request.args.get('menu1') + "'"
     cursor5 = g.conn.execute("SELECT R.rid FROM located_in L, restaurant R WHERE R.cuisine={cuisine} AND R.rid = L.rid AND (L.zip={string_zip} OR L.zip={string_forward_zip} OR L.zip={string_forward_again})".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again, cuisine=cuisine))
     rids = []
     for results in cursor5:
