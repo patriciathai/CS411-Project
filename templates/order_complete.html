@@ -3,15 +3,13 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
         <h3>Your Receipt:</h3>
-        <p>Order id: {{string_oid}}   </p>
-        <p>Total price: {{total_price}} </p>
 
-        {% for number in card_number %}
-            <p> Payment Card Number: {{number}} </p>
-        {% endfor %}
+        <p>Order id: {{string_oid}}</p>
+        <p>Total: ${{total_price}}</p>
+        <p>Paid With: Card ending in {{card_number}} </p>
         
         <form action="/customer_orderhist/{{cids}}">
-            <button type="submit" value="Submit">Main Menu</button>
+            <button type="submit" value="Submit">View My Orders</button>
         </form>
     </body>
 </html>

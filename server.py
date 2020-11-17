@@ -320,10 +320,16 @@ def customer_choose_menu(cid, rid):
   for item in cursor:
     menu.append(item)
   cursor.close()
+
+  cursor2 = g.conn.execute("SELECT * FROM restaurant R, located_in L WHERE L.rid= R.rid AND R.rid={string_rid}".format(string_rid=string_rid))
+  info = []
+  for item in cursor2:
+    info.append(item)
+  cursor2.close()
   
   #print(menu)
   
-  return render_template("customer_menu_order.html",menu=menu,string_rid=string_rid,string_cid=string_cid)
+  return render_template("customer_menu_order.html", info=info[0], menu=menu, string_rid=string_rid, string_cid=string_cid)
 
 @app.route('/<string_cid>/<string_rid>/submitorder', methods=['POST'])
 def customer_submit_order(string_cid,string_rid):
@@ -378,15 +384,14 @@ def customer_submit_order(string_cid,string_rid):
   
   g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
   
-  card_number = []
-  
-#  customer_id = "'" + cids + "'"
+  card_numbers = []
   cursor = g.conn.execute("SELECT card_number from pays_with where cid = {string_cid}".format(string_cid=string_cid))
   for result in cursor:
-    card_number.append(result[0])
+    card_numbers.append(result[0])
   cursor.close()
+  card_number = card_numbers[0]
   
-  return render_template("order_complete.html",card_number=card_number,cids=cids,total_price=total_price,string_oid=string_oid)
+  return render_template("order_complete.html", card_number=card_number[-4:], cids=cids, total_price=total_price, string_oid=string_oid)
 
 
 

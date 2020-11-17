@@ -8,27 +8,46 @@
           padding: 5px;
       }
     </style>
+
+    <script>
+      function btn_click() {
+        var x = document.getElementsByClassName("hide");
+        for (var i = 0; i < x.length; i++) {
+          x[i].style.display = "inline-block";
+        }
+        var y = document.getElementById("start_btn");
+        y.style.display = "none";
+      }
+    </script>
   </head>
+
   <body>
     <h1>Manhattan Food Delivery</h1>
     <h2>Customer Portal</h2>
     
-    <h3>Following are the menu items from your selected resturant. Please chose the quantity for your selected items </h3>
-    <br>
+    <div>
+      <h3>{{info['r_name']}}</h3>
+      {{info['cuisine']}}<br>
+      Rating: {{info['rating']}} / 5<br>
+      Phone: {{info['r_phone']}}<br>
+      Address: {{info['number']}} {{info['street']}}, New York, NY {{info['zip']}}
+    </div><br>
+
+    <button id="start_btn" onclick="btn_click()">Start Order</button>
     
     <form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
-      <h3> Name  |  Description | Price </h3> 
+      <h3> Menu </h3> 
       {% for m in menu %}
         <div class='item'>
           <input type="hidden" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"> 
-          <label for="{{m[0]}}">Name: {{m[0]}} <br>Description: {{m[1]}} <br>Price: {{m[2]}} </label>  
-          <br>
-          <label for="{{m[0]}}">Quantity (between 0 and 10):</label>
-          <input type="number" id="{{m[0]}}" name="{{m[0]}}" min="0" max="10">
-          </div>
+          <label for="{{m[0]}}"><strong>{{m[0]}}</strong><br>{{m[1]}}<br>${{m[2]}}</label>
+          <br><br>
+          <label style="display: none;" class="hide" for="{{m[0]}}">Select Quantity:</label>
+          <input style="display: none;" class="hide" type="number" id="{{m[0]}}" name="{{m[0]}}" min="0" max="10">
+        </div>
       {% endfor %}
       <br></br>
-      <button type="submit" value="Submit">Submit</button>
+      <button class="hide" style="display: none;" type="submit" value="Submit">Checkout</button>
     </form>
 
   </body>
