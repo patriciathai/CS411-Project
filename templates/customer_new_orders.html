@@ -6,15 +6,42 @@
                 margin-top: 10px;
                 width: 500px;
                 padding: 5px;
-		padding-bottom: 0px;
+		        padding-bottom: 0px;
             }
 
-	    form { height: 14px; }
+	        form { height: 14px; }
     	</style>
     </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
+
+        <form action="" method="POST">
+            <label for="searchbox">Search Restaurant by Name:</label>
+            <input type="text" name="searchbox">
+            <input class="search_btn" type="submit" value="Search">
+        </form>
+        <p>OR</p>
+        <form action="/{{cid}}/neworders/cfilter" method="GET">
+            <label for="menu1">Filter by Cuisine:</label>
+            <select name="menu1">
+                {% for c in cuisines %}
+                    <option value="{{c}}">{{c}}</option>
+                {% endfor %}
+            </select>
+            <input class="cfilter_btn" type="submit" value="Filter">
+        </form>
+        <p>OR</p>
+        <form action="" method="POST">
+            <label for="menu2">Filter by Rating:</label>
+            <select name="menu2">
+                <option value="1.0">&GreaterEqual; 1.0</option>
+                <option value="2.0">&GreaterEqual; 2.0</option>
+                <option value="3.0">&GreaterEqual; 3.0</option>
+                <option value="4.0">&GreaterEqual; 4.0</option>
+            </select>
+            <input class="cfilter_btn" type="submit" value="Filter">
+        </form>
 
         <h3>Available Restaurants Near Your Area:</h3>
         {% for r in restaurants %}
