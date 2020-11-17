@@ -61,7 +61,7 @@ def home():
 
 ############################# CUSTOMER ####################################
 
-@app.route('/customer/<sucess>')
+@app.route('/customer/<success>')
 def get_customer(success):
   return render_template('customer.html', success=success)
 
@@ -74,15 +74,14 @@ def customer_login():
 
   cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_name={name}".format(email=email, name=name))
   list_cid = []
-  if not cursor:
-    cursor.close()
-    var success = False
-    url= '/customer/' + success
+  for result in cursor:
+    list_cid.append(result[0])
+  cursor.close()
+  if not list_cid:
+    success = 'False'
+    url = '/customer/' + success
     return redirect(url)
   else:
-    for result in cursor:
-      list_cid.append(result[0])
-    cursor.close()
     cid = list_cid[0]
     url = '/customer_main/' + cid
     return redirect(url)
