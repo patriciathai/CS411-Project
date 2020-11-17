@@ -151,17 +151,19 @@ def edit_customer(cid, action):
     street = "'" + request.args.get('street') + "'" 
     apt = "'" + request.args.get('apt') + "'" 
     zip_code = "'" + request.args.get('zip') + "'" 
+    g.conn.execute('DELETE FROM lives_in WHERE cid={string_cid}'.format(string_cid=string_cid))
     g.conn.execute('UPDATE address SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE number={info_number} AND street={info_street} AND apt={info_apt} AND zip={info_zip}'.format(number=number,street=street,apt=apt,zip_code=zip_code, info_zip=info_zip, info_number=info_number, info_street=info_street, info_apt=info_apt))
-    g.conn.execute('UPDATE lives_in SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE cid={string_cid}'.format(number=number,street=street,apt=apt, zip_code=zip_code, string_cid=string_cid))
+    g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, number, street, apt, zip_code)
     url = '/customer_main/' + cid
     return redirect(url)
   
   elif action == 'payment':
     card_num = "'" + request.args.get('card_num') + "'" 
     exp = "'" + request.args.get('exp') + "'" 
-    sec = "'" + request.args.get('sec') + "'" 
+    sec = "'" + request.args.get('sec') + "'"
+    g.conn.execute('DELETE FROM pays_with WHERE cid={string_cid}'.format(string_cid=string_cid))
     g.conn.execute('UPDATE payment_method SET card_number={card_num}, exp={exp}, sec_code={sec} WHERE card_number={info_card_number}'.format(card_num=card_num, exp=exp, sec=sec, info_card_number=info_card_number))
-    g.conn.execute('UPDATE pays_with SET card_number={card_num} WHERE cid={string_cid}'.format(card_num=card_num, string_cid=string_cid))
+    g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
     url = '/customer_main/' + cid
     return redirect(url)
   
