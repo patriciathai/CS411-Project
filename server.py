@@ -283,6 +283,13 @@ def customer_new_orders(cid, my_filter):
     for results in cursor6:
       rids.append(results['rid'])
     cursor6.close()
+  elif (my_filter == 'search'):
+    name = "'%" + request.args.get('searchbox') + "%'"
+    cursor7 = g.conn.execute("SELECT R.rid FROM located_in L, restaurant R WHERE R.r_name ILIKE {name} AND R.rid = L.rid AND (L.zip={string_zip} OR L.zip={string_forward_zip} OR L.zip={string_forward_again})".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again, name=name))
+    rids = []
+    for results in cursor7:
+      rids.append(results['rid'])
+    cursor7.close()
   else:
     cursor2 = g.conn.execute("SELECT rid FROM located_in WHERE zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
     rids = []
