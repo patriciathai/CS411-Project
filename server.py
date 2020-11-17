@@ -406,7 +406,7 @@ def driver_login():
     return redirect(url)
   else:
     did = list_did[0]
-    url = '/customer_main/' + did
+    url = '/driver_main/' + did
     return redirect(url)
 
 @app.route("/driver_signup")
