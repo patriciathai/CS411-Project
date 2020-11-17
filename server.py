@@ -372,26 +372,29 @@ def customer_submit_order(string_cid,string_rid):
       emptylist.append(results)
   oids = str(oid)
   cids = string_cid.replace("'","")
+  menu_items = []
   for i in range(len(selected_menu_name)): 
     if int(select_menu_quantity[i]) != 0: 
       m_name =  selected_menu_name[i]
       quantity = int(select_menu_quantity[i])
       rids = string_rid.replace("'","")
       
-      g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)",oids, m_name, quantity,rids)
+      g.conn.execute("INSERT INTO order_has_menu_item VALUES (%s, %s, %s, %s)", oids, m_name, quantity, rids)
+      menu_item = {'m_name': m_name, 'quantity': quantity}
+      menu_items.append(menu_item)
   
-  g.conn.execute("INSERT INTO places VALUES (%s, %s)",cids,oids)
+  g.conn.execute("INSERT INTO places VALUES (%s, %s)", cids, oids)
   
-  g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)",oids,total_price,"Processing","none")
+  g.conn.execute("INSERT INTO order_fulfilled_by_driver VALUES (%s,%s,%s,%s)", oids, total_price,"Processing","none")
   
-  card_numbers = []
-  cursor = g.conn.execute("SELECT card_number from pays_with where cid = {string_cid}".format(string_cid=string_cid))
+  customer_info = []
+  cursor = g.conn.execute("SELECT C.c_name, L.number, L.street, L.apt, L.zip, P.card_number from customer C, lives_in L, pays_with P where C.cid = P.cid AND L.cid = P.cid AND P.cid={string_cid}".format(string_cid=string_cid))
   for result in cursor:
-    card_numbers.append(result[0])
+    customer_info.append(result[0])
   cursor.close()
-  card_number = card_numbers[0]
+  card_number = customer_info[0]['card_number']
   
-  return render_template("order_complete.html", card_number=card_number[-4:], cids=cids, total_price=total_price, string_oid=string_oid)
+  return render_template("order_complete.html", card_number=card_number[-4:], cids=cids, total_price=total_price, oid=oid, menu_items=menu_items, customer_info=customer_info[0])
 
 
 

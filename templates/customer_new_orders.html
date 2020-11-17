@@ -25,6 +25,7 @@
         <form action="/{{cid}}/neworders/cfilter" method="GET">
             <label for="menu1">Filter by Cuisine:</label>
             <select name="menu1">
+                <option value=""> </option>
                 {% for c in cuisines %}
                     <option value="{{c}}">{{c}}</option>
                 {% endfor %}
@@ -35,6 +36,7 @@
         <form action="/{{cid}}/neworders/rfilter" method="GET">
             <label for="menu2">Filter by Rating:</label>
             <select name="menu2">
+                <option value=""> </option>
                 <option value="1.0">&GreaterEqual; 1.0</option>
                 <option value="2.0">&GreaterEqual; 2.0</option>
                 <option value="3.0">&GreaterEqual; 3.0</option>

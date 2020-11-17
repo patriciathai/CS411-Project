@@ -4,8 +4,19 @@
         <h2>Customer Portal</h2>
         <h3>Your Receipt:</h3>
 
-        <p>Order id: {{string_oid}}</p>
+        <p>Order ID: {{string_oid}}</p>
+        
+
+        {% for item in menu_items %}
+            <p>{{item['quantity']}}&nbsp;&nbsp;{{item['m_name']}}</p>
+        {% endfor %}
+
         <p>Total: ${{total_price}}</p>
+        
+        <p>Delivery To:<br>
+        {{customer_info['c_name']}}<br>
+        {{customer_info['number']}} {{customer_info['street']}}, Apt. {{customer_info['apt']}}, New York, NY {{customer_info['zip']}}
+        </p>
         <p>Paid With: Card ending in {{card_number}} </p>
         
         <form action="/customer_orderhist/{{cids}}">
