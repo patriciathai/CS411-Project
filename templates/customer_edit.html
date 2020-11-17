@@ -16,7 +16,7 @@
             My Email: {{info['c_email']}}<br>
             My Phone Number: {{info['c_phone']}}
         </p>
-        <form method="POST" action="/customer_edit/{{cid}}/account">
+        <form method="GET" action="/customer_edit/{{cid}}/account">
             <div class="account">
                 <h3> Edit Account Info:</h3>
                 <label for="s_name">Full Name:</label><br>
@@ -32,7 +32,7 @@
         <p>
             My Address: {{info['number']}} {{info['street']}}, Apt. {{info['apt']}}, New York, NY {{info['zip']}}
         </p>
-        <form method="POST" action="/customer_edit/{{cid}}/address">
+        <form method="GET" action="/customer_edit/{{cid}}/address">
             <div class="address">
                 <h3>Edit Address:</h3>
                 <label for="number">Number:</label><br>
@@ -50,7 +50,7 @@
         <p>
             My Card: ends in {{info['card_number'][-4:]}}
         </p>
-        <form method="POST" action="/customer_edit/{{cid}}/payment">
+        <form method="GET" action="/customer_edit/{{cid}}/payment">
             <div class="payment">
                 <h3>Edit Payment Method:</h3>
                 <label for="card_num">Card Number:</label><br>

@@ -123,7 +123,7 @@ def add_customer():
   url = '/customer_main/' + cid
   return redirect(url)
 
-@app.route("/customer_edit/<cid>/<action>", methods=['POST'])
+@app.route("/customer_edit/<cid>/<action>")
 def edit_customer(cid, action):
   string_cid= "'" + cid + "'"
   cursor = g.conn.execute("SELECT C.c_name, C.c_email, C.c_phone, L.number, L.street, L.apt, L.zip, P.card_number FROM customer C, lives_in L, pays_with P WHERE C.cid={string_cid} AND C.cid=P.cid AND C.cid=L.cid".format(string_cid=string_cid))
@@ -139,34 +139,34 @@ def edit_customer(cid, action):
   info_card_number = "'" + info['card_number'] + "'"
 
   if action == 'account':
-    name = "'" + request.form['s_name'] + "'"
-    email = "'" + request.form['s_email'] + "'"
-    phone = "'" + request.form['s_phone'] + "'"
-    g.conn.execute('UPDATE customer SET c_name={name}, c_email={email}, c_phone={phone} WHERE cid={cid}'.format(name=name,email=email,phone=phone,string_cid=string_cid))
+    name = "'" + request.args.get('s_name') + "'"
+    email = "'" + request.args.get('s_email') + "'"
+    phone = "'" + request.args.get('s_phone') + "'"
+    g.conn.execute('UPDATE customer SET c_name={name}, c_email={email}, c_phone={phone} WHERE cid={string_cid}'.format(name=name,email=email,phone=phone,string_cid=string_cid))
     url = '/customer_main/' + cid
     return redirect(url)
     
   elif action == 'address':
-    number = request.form['number']
-    street = request.form['street']
-    apt = request.form['apt']
-    zip_code = request.form['zip']
+    number = "'" + request.args.get('number') + "'" 
+    street = "'" + request.args.get('street') + "'" 
+    apt = "'" + request.args.get('apt') + "'" 
+    zip_code = "'" + request.args.get('zip') + "'" 
     g.conn.execute('UPDATE address SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE number={info_number} AND street={info_street} AND apt={info_apt} AND zip={info_zip}'.format(number=number,street=street,apt=apt,zip_code=zip_code, info_zip=info_zip, info_number=info_number, info_street=info_street, info_apt=info_apt))
-    g.conn.execute('UPDATE lives_in SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE cid={cid}'.format(number=number,street=street,apt=apt, zip_code=zip_code, string_cid=string_cid))
+    g.conn.execute('UPDATE lives_in SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE cid={string_cid}'.format(number=number,street=street,apt=apt, zip_code=zip_code, string_cid=string_cid))
     url = '/customer_main/' + cid
     return redirect(url)
   
-  elif action == 'payment'
-    card_num = request.form['card_num']
-    exp = request.form['exp']
-    sec = request.form['sec']
+  elif action == 'payment':
+    card_num = "'" + request.args.get('card_num') + "'" 
+    exp = "'" + request.args.get('exp') + "'" 
+    sec = "'" + request.args.get('sec') + "'" 
     g.conn.execute('UPDATE payment_method SET card_number={card_num}, exp={exp}, sec_code={sec} WHERE card_number={info_card_number}'.format(card_num=card_num, exp=exp, sec=sec, info_card_number=info_card_number))
-    g.conn.execute('UPDATE pays_with SET card_number={card_num} WHERE cid={cid}'.format(card_num=card_num, string_cid=string_cid))
+    g.conn.execute('UPDATE pays_with SET card_number={card_num} WHERE cid={string_cid}'.format(card_num=card_num, string_cid=string_cid))
     url = '/customer_main/' + cid
     return redirect(url)
   
   else:
-    return render_template('customer_edit.html', info=info)
+    return render_template('customer_edit.html', cid=cid, info=info)
 
 
 @app.route("/customer_main/<cid>")
