@@ -6,7 +6,10 @@
                 margin-top: 10px;
                 width: 500px;
                 padding: 5px;
+		padding-bottom: 0px;
             }
+
+	    form { height: 14px; }
     	</style>
     </head>
     <body>
@@ -16,9 +19,9 @@
         <h3>Available Restaurants Near Your Area:</h3>
         {% for r in restaurants %}
             <div class="restaurant_content">
-                <p><strong>{{r['r_name']}}</strong></p>
-                <p>{{r['cuisine']}}</p>
-                <p>Rating: {{r['rating']}} / 5</p>
+                <strong>{{r['r_name']}}</strong><br>
+                {{r['cuisine']}}<br>
+                Rating: {{r['rating']}} / 5</br>
                 <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
                     <button type="submit" value="Submit">Browse</button>
                 </form>
