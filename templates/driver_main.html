@@ -19,6 +19,9 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Delivery Driver Portal</h2>
         <h3 class="welcome">Welcome, {{d_name}}</h3>
+        <form method = "GET" action="/driver/True">
+            <button>Log Out</button>     
+        </form>
         <div class="pending">
             <p class="title">Your Current Delivery Orders</p>
             {% if not pending %}

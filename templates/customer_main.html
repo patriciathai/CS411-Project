@@ -3,6 +3,8 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
         <h3 class="welcome">Welcome, {{c_name}}</h3>
+
+        <h3>Main Menu</h3>
     
         <form method="GET" action="/customer_edit/{{cid}}/none">
             <button>Edit My Information</button>
@@ -14,6 +16,10 @@
         
         <form method = "GET" action="/{{cid}}/neworders/none">
             <button>Browse Restaurants in My Area</button>     
+        </form>
+
+        <form method = "GET" action="/customer/True">
+            <button>Log Out</button>     
         </form>
     </body>
 </html>

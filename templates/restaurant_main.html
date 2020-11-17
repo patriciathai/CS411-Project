@@ -19,6 +19,11 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Restaurant Portal</h2>
         <h3 class="welcome">{{r_name}} - View your orders:</h3>
+
+        <form method = "GET" action="/restaurant/True">
+            <button>Log Out</button>     
+        </form>
+
         <div class="incoming">
             <p class="title">Incoming Orders</p>
             {% if not incoming %}

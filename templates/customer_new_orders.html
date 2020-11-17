@@ -26,6 +26,12 @@
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
 
+        <form method="GET" action="/customer_main/{{cid}}">
+            <button>Back to Main Menu</button>
+        </form>
+
+        <h3>Browse Restaurants</h3>
+
         <form action="/{{cid}}/neworders/search" method="GET">
             <label for="searchbox">Search Restaurant by Name:</label>
             <input type="text" name="searchbox">
