@@ -9,6 +9,16 @@
 		        padding-bottom: 0px;
             }
 
+            .rec_restaurant_content {
+                border: 2px solid rgb(99, 148, 99);
+                margin-top: 10px;
+                width: 500px;
+                padding: 5px;
+		        padding-bottom: 0px;
+            }
+
+            .title {color: rgb(99, 148, 99);}
+
 	        form { height: 14px; }
     	</style>
     </head>
@@ -49,15 +59,30 @@
         {% if restaurants == 'none' %}
             <p>There are no restaurants in your area that match your requests.</p>
         {% else %}
+             for r in rec_restaurants %}
+                {% if rec_restaurants != 'empty' %}
+                    <div class="rec_restaurant_content">
+                        <span class="title">Recommended for You:</span><br>
+                        <strong>{{r['r_name']}}</strong><br>
+                        {{r['cuisine']}}<br>
+                        Rating: {{r['rating']}} / 5</br>
+                        <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                            <button type="submit" value="Submit">Browse</button>
+                        </form>
+                    </div>
+                {% endif %}
+            {% endfor %}
             {% for r in restaurants %}
-                <div class="restaurant_content">
-                    <strong>{{r['r_name']}}</strong><br>
-                    {{r['cuisine']}}<br>
-                    Rating: {{r['rating']}} / 5</br>
-                    <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
-                        <button type="submit" value="Submit">Browse</button>
-                    </form>
-                </div>
+                {% if restaurants != 'empty' %}
+                    <div class="restaurant_content">
+                        <strong>{{r['r_name']}}</strong><br>
+                        {{r['cuisine']}}<br>
+                        Rating: {{r['rating']}} / 5</br>
+                        <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                            <button type="submit" value="Submit">Browse</button>
+                        </form>
+                    </div>
+                {% endif %}
             {% endfor %}
         {% endif %}
     

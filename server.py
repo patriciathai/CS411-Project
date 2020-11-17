@@ -349,14 +349,25 @@ def customer_new_orders(cid, my_filter):
     restaurants = 'none'
   else:
     restaurants = []
+    rec_restaurants =[]
     for rid in rids:
       string_rid= "'" + rid + "'"
-      cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
+      cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid NOT IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
       for results in cursor3:
         restaurants.append(results)
-      cursor3.close()  
+      cursor3.close()
+
+      cursor8 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
+      for results in cursor8:
+        rec_restaurants.append(results)
+      cursor8.close()
+
+      if not restaurants:
+        restaurants = 'empty'
+      if not rec_restaurants:
+        rec_restaurants = 'empty'
   
-  return render_template("customer_new_orders.html", cuisines=cuisines, restaurants=restaurants, cid=cid)
+  return render_template("customer_new_orders.html", cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
 
 @app.route('/<cid>/<rid>/menu_order', methods=['POST'])
 def customer_choose_menu(cid, rid):
