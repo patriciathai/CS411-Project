@@ -274,7 +274,7 @@ def add_rating(cid, rid):
 
 @app.route('/update_rating/<cid>/<rid>', methods=['POST'] )
 def update_rating(cid, rid):
-  rating = request.form['slider']
+  rating = request.form['slider2']
   string_cid = "'"+cid+"'"
   string_rid = "'"+rid+"'"
 
@@ -362,11 +362,6 @@ def customer_new_orders(cid, my_filter):
         rec_restaurants.append(results)
       cursor8.close()
 
-      if not restaurants:
-        restaurants = 'empty'
-      if not rec_restaurants:
-        rec_restaurants = 'empty'
-  
   return render_template("customer_new_orders.html", cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
 
 @app.route('/<cid>/<rid>/menu_order', methods=['POST'])

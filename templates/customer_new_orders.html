@@ -59,8 +59,8 @@
         {% if restaurants == 'none' %}
             <p>There are no restaurants in your area that match your requests.</p>
         {% else %}
-             for r in rec_restaurants %}
-                {% if rec_restaurants != 'empty' %}
+	    {% if rec_restaurants %}
+	        {% for r in rec_restaurants %}
                     <div class="rec_restaurant_content">
                         <span class="title">Recommended for You:</span><br>
                         <strong>{{r['r_name']}}</strong><br>
@@ -70,10 +70,10 @@
                             <button type="submit" value="Submit">Browse</button>
                         </form>
                     </div>
-                {% endif %}
-            {% endfor %}
-            {% for r in restaurants %}
-                {% if restaurants != 'empty' %}
+                {% endfor %}
+            {% endif %}
+	    {% if restaurants %}
+            	{% for r in restaurants %}
                     <div class="restaurant_content">
                         <strong>{{r['r_name']}}</strong><br>
                         {{r['cuisine']}}<br>
@@ -82,8 +82,8 @@
                             <button type="submit" value="Submit">Browse</button>
                         </form>
                     </div>
-                {% endif %}
-            {% endfor %}
+                {% endfor %}
+            {% endif %}
         {% endif %}
     
     </body>
