@@ -6,10 +6,10 @@
             <p>If you are an existing delivery driver,</p>
             <h3>Log In:</h3>
             <form action = "/driver_login" method="POST" >
-                <label for="l_name">Full Name:</label><br>
-                <input type="text" id="l_name" name="l_name"><br>
                 <label for="l_email">Email:</label><br>
-		        <input type="text" id="l_email" name="l_email"><br>
+                <input type="email" id="l_email" name="l_email"><br>
+                <label for="l_pass">Password:</label><br>
+                <input type="password" id="l_pass" name="l_pass"><br>
                 <button type ="Submit">Enter</button>
             </form>
             {% if success == 'False' %}

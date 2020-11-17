@@ -67,12 +67,12 @@ def get_customer(success):
 
 @app.route("/customer_login", methods=['POST'] )
 def customer_login():
-  name = request.form['l_name']
+  password = request.form['l_pass']
   email = request.form['l_email']
-  name = "'"+name+"'"
+  password = "'"+password+"'"
   email = "'"+email+"'"
 
-  cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_name={name}".format(email=email, name=name))
+  cursor = g.conn.execute("SELECT cid FROM customer WHERE c_email={email} AND c_password={password}".format(email=email, password=password))
   list_cid = []
   for result in cursor:
     list_cid.append(result[0])
@@ -468,12 +468,12 @@ def get_driver(success):
 
 @app.route("/driver_login", methods=['POST'] )
 def driver_login():
-  name = request.form['l_name']
+  password = request.form['l_pass']
   email = request.form['l_email']
-  name = "'"+name+"'"
+  password = "'"+password+"'"
   email = "'"+email+"'"
 
-  cursor = g.conn.execute("SELECT did FROM driver WHERE d_email={email} AND d_name={name}".format(email=email, name=name))
+  cursor = g.conn.execute("SELECT did FROM driver WHERE d_email={email} AND d_password={password}".format(email=email, password=password))
   list_did = []
   for result in cursor:
     list_did.append(result[0])
@@ -582,12 +582,12 @@ def get_restaurant(success):
 
 @app.route("/restaurant_login", methods=['POST'] )
 def restaurant_login():
-  name = request.form['l_name']
+  password = request.form['l_password']
   phone = request.form['l_phone']
-  name = "'"+name+"'"
+  password = "'"+password+"'"
   phone = "'"+phone+"'"
 
-  cursor = g.conn.execute("SELECT rid FROM restaurant WHERE r_name={name} AND r_phone={phone}".format(name=name, phone=phone))
+  cursor = g.conn.execute("SELECT rid FROM restaurant WHERE r_password={password} AND r_phone={phone}".format(password=password, phone=phone))
   list_rid = []
   for result in cursor:
     list_rid.append(result[0])
