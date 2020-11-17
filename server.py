@@ -276,7 +276,7 @@ def customer_new_orders(cid, my_filter):
     for results in cursor5:
       rids.append(results['rid'])
     cursor5.close()
-  else if (my_filter == 'rfilter'):
+  elif (my_filter == 'rfilter'):
     rating = float(request.args.get('menu2'))
     cursor6 = g.conn.execute("SELECT R.rid FROM located_in L, restaurant R WHERE R.rating>={rating} AND R.rid = L.rid AND (L.zip={string_zip} OR L.zip={string_forward_zip} OR L.zip={string_forward_again})".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again, rating=rating))
     rids = []
