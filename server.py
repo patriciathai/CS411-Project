@@ -582,7 +582,7 @@ def get_restaurant(success):
 
 @app.route("/restaurant_login", methods=['POST'] )
 def restaurant_login():
-  password = request.form['l_password']
+  password = request.form['l_pass']
   phone = request.form['l_phone']
   password = "'"+password+"'"
   phone = "'"+phone+"'"
