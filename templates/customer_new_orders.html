@@ -1,22 +1,29 @@
 <html>  
+    <head>
+    	<style>
+            .restaurant_content {
+                border: 1px solid grey;
+                margin-top: 10px;
+                width: 500px;
+                padding: 5px;
+            }
+    	</style>
+    </head>
     <body>
-        <h2> Available Restaurants Near Your Area: </h2>
-        <form action="/{{cid}}/menu_order" method="POST">
-        <select name = "RestaurantList">
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Customer Portal</h2>
 
-            {% for r in  restaurants %}
-            <option value = "{{r[0]}}">{{r[1]}}</option>
-
-            {% endfor %}
-        </select>
-        <br></br>
-        <p> By clicking submit below, you are authorizing to make a payment from your existing card </p>
-        <br> </br>
-         <button type="submit" value="Submit">Submit</button>
-        </form>
+        <h3>Available Restaurants Near Your Area:</h3>
+        {% for r in restaurants %}
+            <div class="restaurant_content">
+                <p><strong>{{r['r_name']}}</strong></p>
+                <p>{{r['cuisine']}}</p>
+                <p>Rating: {{r['rating']}} / 5</p>
+                <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                    <button type="submit" value="Submit">Browse</button>
+                </form>
+            </div>
+        {% endfor %}
     
-       
-    
-
     </body>
 </html>

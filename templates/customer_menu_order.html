@@ -1,33 +1,21 @@
 <html>
-
-<body>
-
-<h3> Following are the menu items from your selected resturant. Please chose the quantity for your selected items </h3>
-<br>
-<form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
-<h3> Name  |  Description | Price </h3> 
-{% for m in menu %}
-   <input type="hidden" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"> 
-   
-  <label for="{{m[0]}}"> Name: {{m[0]}}  <br> Description: {{m[1]}} <br>  Price: {{m[2]}} </label>  
-  <br><br>
-<label for="{{m[0]}}">Quantity (between 0 and 10):</label>
-<input type="number" id="{{m[0]}}" name="{{m[0]}}" min="0" max="10">
-  <br><br>
-
-{% endfor %}
-
-<br></br>
-    <button type="submit" value="Submit">Submit</button>
-
-</form>
-
-
-
-
-
-</body>
-
-
-
+  <body>
+    <h1>Manhattan Food Delivery</h1>
+    <h2>Customer Portal</h2>
+    <h3>Following are the menu items from your selected resturant. Please chose the quantity for your selected items </h3>
+    <br>
+    <form action="/{{string_cid}}/{{string_rid}}/submitorder" method="POST">
+      <h3> Name  |  Description | Price </h3> 
+      {% for m in menu %}
+        <input type="hidden" id="{{m[0]}}" name="{{m[0]}}" value="{{m[2]}}"> 
+        <label for="{{m[0]}}"> Name: {{m[0]}}  <br> Description: {{m[1]}} <br>  Price: {{m[2]}} </label>  
+        <br><br>
+        <label for="{{m[0]}}">Quantity (between 0 and 10):</label>
+        <input type="number" id="{{m[0]}}" name="{{m[0]}}" min="0" max="10">
+        <br><br>
+      {% endfor %}
+      <br></br>
+      <button type="submit" value="Submit">Submit</button>
+    </form>
+  </body>
 </html>

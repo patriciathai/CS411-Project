@@ -246,49 +246,43 @@ def update_rating(cid, rid):
 
 @app.route('/<cid>/neworders')
 def customer_new_orders(cid):
-    string_cid = "'"+cid+"'"
-    cursor = g.conn.execute("SELECT zip FROM lives_in WHERE cid={string_cid}".format(string_cid=string_cid))
-    zipcodes = []
-    for results in cursor:
-        zipcode = int(results['zip'])
-        forward = zipcode+1
-        forward_2= zipcode+2
-        zipcodes.append(zipcode)
-        zipcodes.append(forward)
-        zipcodes.append(forward_2)
-    rids = []
-    cursor.close()
-    
-    string_zip= "'"+ str(zipcodes[0])+"'"
-    string_forward_zip ="'" +str( zipcodes[1]) + "'"
-    string_forward_again = "'" + str(zipcodes[2])+ "'"
-    
-    cursor2 = g.conn.execute("SELECT rid FROM located_in WHERE zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
-    rids = []
-    for results in cursor2:
-        rids.append(results['rid'])
-    cursor2.close()
-    
-    restaurants = []
-    for rid in rids:
-        string_rid= "'" + rid + "'"
-        cursor3 = g.conn.execute("SELECT * FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
-        for results in cursor3:
-            #print(results)
-            restaurants.append(results)
-        cursor3.close()  
-    
-    return render_template("customer_new_orders.html", restaurants=restaurants,cid=cid)
+  string_cid = "'"+cid+"'"
+  cursor = g.conn.execute("SELECT zip FROM lives_in WHERE cid={string_cid}".format(string_cid=string_cid))
+  zipcodes = []
+  for results in cursor:
+      zipcode = int(results['zip'])
+      forward = zipcode+1
+      forward_2= zipcode+2
+      zipcodes.append(zipcode)
+      zipcodes.append(forward)
+      zipcodes.append(forward_2)
+  rids = []
+  cursor.close()
+  
+  string_zip= "'"+ str(zipcodes[0])+"'"
+  string_forward_zip ="'" +str( zipcodes[1]) + "'"
+  string_forward_again = "'" + str(zipcodes[2])+ "'"
+  
+  cursor2 = g.conn.execute("SELECT rid FROM located_in WHERE zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
+  rids = []
+  for results in cursor2:
+      rids.append(results['rid'])
+  cursor2.close()
+  
+  restaurants = []
+  for rid in rids:
+      string_rid= "'" + rid + "'"
+      cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
+      for results in cursor3:
+          restaurants.append(results)
+      cursor3.close()  
+  
+  return render_template("customer_new_orders.html", restaurants=restaurants,cid=cid)
 
-@app.route('/<cid>/menu_order', methods=['POST'])
-def customer_choose_menu(cid):
-    #string_rid= "'" + rid + "'"
-    print("coming here")
-    string_cid = "'"+cid+"'"
-    print("stringcid coming here" + string_cid)
-    print(request.form)
-    string_rid= "'" + request.form['RestaurantList'] + "'"
-    print("rid" + string_rid)
+@app.route('/<cid>/<rid>/menu_order', methods=['POST'])
+def customer_choose_menu(cid, rid):
+    string_cid = "'" + cid + "'"
+    string_rid= "'" + rid + "'"
     # Get menu item from restaurant
     cursor = g.conn.execute("SELECT m_name, description, item_price FROM menu_item_belongs_to WHERE rid={string_rid}".format(string_rid=string_rid))
     menu = []
@@ -302,7 +296,6 @@ def customer_choose_menu(cid):
 
 @app.route('/<string_cid>/<string_rid>/submitorder', methods=['POST'])
 def customer_submit_order(string_cid,string_rid):
-    print(request.form)
     f = request.form
     
     selected_menu_name = []
@@ -311,7 +304,6 @@ def customer_submit_order(string_cid,string_rid):
     m = 0
     for name in f.keys():
         selected_menu_name.append(name)
-        print(name)
         for priceorquantity in f.getlist(name):
             if m % 2 == 0:
                 select_menu_price.append(float(priceorquantity))
@@ -326,11 +318,6 @@ def customer_submit_order(string_cid,string_rid):
     for i in range(len(select_menu_price)):
         total_price += select_menu_price[i] * select_menu_quantity[i]
         
-    print(selected_menu_name)
-    print(select_menu_price)
-    print(select_menu_quantity)
-    
-    print(total_price)
     oid = random.randrange(10000000, 99999999) 
     emptylist= []
     
@@ -346,7 +333,6 @@ def customer_submit_order(string_cid,string_rid):
          cursor = g.conn.execute("SELECT * from order_has_menu_item where oid = {string_oid}".format(string_oid=string_oid))
          for results in cursor:
               emptylist.append(results)
-    print(string_oid)
     oids = str(oid)
     cids = string_cid.replace("'","")
     for i in range(len(selected_menu_name)): 
@@ -363,14 +349,11 @@ def customer_submit_order(string_cid,string_rid):
     
     card_number = []
    
-    print(cids)
   #  customer_id = "'" + cids + "'"
     cursor = g.conn.execute("SELECT card_number from pays_with where cid = {string_cid}".format(string_cid=string_cid))
     for result in cursor:
-        print(result)
         card_number.append(result[0])
     cursor.close()
-    print(card_number) 
     
     return render_template("order_complete.html",card_number=card_number,cids=cids,total_price=total_price,string_oid=string_oid)
 
