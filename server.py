@@ -123,7 +123,7 @@ def add_customer():
   url = '/customer_main/' + cid
   return redirect(url)
 
-@app.route("/customer_edit/<cid>/<action>")
+@app.route("/customer_edit/<cid>/<action>", methods=['GET','POST'])
 def edit_customer(cid, action):
   string_cid= "'" + cid + "'"
   cursor = g.conn.execute("SELECT C.c_name, C.c_email, C.c_phone, L.number, L.street, L.apt, L.zip, P.card_number FROM customer C, lives_in L, pays_with P WHERE C.cid={string_cid} AND C.cid=P.cid AND C.cid=L.cid".format(string_cid=string_cid))
@@ -153,7 +153,7 @@ def edit_customer(cid, action):
     zip_code = "'" + request.args.get('zip') + "'" 
     g.conn.execute('DELETE FROM lives_in WHERE cid={string_cid}'.format(string_cid=string_cid))
     g.conn.execute('UPDATE address SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE number={info_number} AND street={info_street} AND apt={info_apt} AND zip={info_zip}'.format(number=number,street=street,apt=apt,zip_code=zip_code, info_zip=info_zip, info_number=info_number, info_street=info_street, info_apt=info_apt))
-    g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, number, street, apt, zip_code)
+    g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, request.args.get('number'), request.args.get('street'), request.args.get('apt'), request.args.get('zip'))
     url = '/customer_main/' + cid
     return redirect(url)
   
@@ -163,7 +163,7 @@ def edit_customer(cid, action):
     sec = "'" + request.args.get('sec') + "'"
     g.conn.execute('DELETE FROM pays_with WHERE cid={string_cid}'.format(string_cid=string_cid))
     g.conn.execute('UPDATE payment_method SET card_number={card_num}, exp={exp}, sec_code={sec} WHERE card_number={info_card_number}'.format(card_num=card_num, exp=exp, sec=sec, info_card_number=info_card_number))
-    g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
+    g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, request.args.get('card_num'))
     url = '/customer_main/' + cid
     return redirect(url)
   
