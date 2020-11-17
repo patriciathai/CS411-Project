@@ -32,7 +32,7 @@
             <input class="cfilter_btn" type="submit" value="Filter">
         </form>
         <p>OR</p>
-        <form action="" method="POST">
+        <form action="/{{cid}}/neworders/rfilter" method="GET">
             <label for="menu2">Filter by Rating:</label>
             <select name="menu2">
                 <option value="1.0">&GreaterEqual; 1.0</option>
@@ -40,20 +40,24 @@
                 <option value="3.0">&GreaterEqual; 3.0</option>
                 <option value="4.0">&GreaterEqual; 4.0</option>
             </select>
-            <input class="cfilter_btn" type="submit" value="Filter">
+            <input class="rfilter_btn" type="submit" value="Filter">
         </form>
 
         <h3>Available Restaurants Near Your Area:</h3>
-        {% for r in restaurants %}
-            <div class="restaurant_content">
-                <strong>{{r['r_name']}}</strong><br>
-                {{r['cuisine']}}<br>
-                Rating: {{r['rating']}} / 5</br>
-                <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
-                    <button type="submit" value="Submit">Browse</button>
-                </form>
-            </div>
-        {% endfor %}
+        {% if restaurants == 'none' %}
+            <p>There are no restaurants in your area that match your requests.</p>
+        {% else %}
+            {% for r in restaurants %}
+                <div class="restaurant_content">
+                    <strong>{{r['r_name']}}</strong><br>
+                    {{r['cuisine']}}<br>
+                    Rating: {{r['rating']}} / 5</br>
+                    <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                        <button type="submit" value="Submit">Browse</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% endif %}
     
     </body>
 </html>

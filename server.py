@@ -244,8 +244,8 @@ def update_rating(cid, rid):
   url = '/customer_orderhist/'+cid
   return redirect(url)
 
-@app.route('/<cid>/neworders/<cfilter>')
-def customer_new_orders(cid, cfilter):
+@app.route('/<cid>/neworders/<my_filter>')
+def customer_new_orders(cid, my_filter):
   string_cid = "'"+cid+"'"
   cursor = g.conn.execute("SELECT zip FROM lives_in WHERE cid={string_cid}".format(string_cid=string_cid))
   zipcodes = []
@@ -269,13 +269,20 @@ def customer_new_orders(cid, cfilter):
     cuisines.append(results['cuisine'])
   cursor4.close()
   
-  if (cfilter == 'cfilter'):
+  if (my_filter == 'cfilter'):
     cuisine = "'" + request.args.get('menu1') + "'"
     cursor5 = g.conn.execute("SELECT R.rid FROM located_in L, restaurant R WHERE R.cuisine={cuisine} AND R.rid = L.rid AND (L.zip={string_zip} OR L.zip={string_forward_zip} OR L.zip={string_forward_again})".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again, cuisine=cuisine))
     rids = []
     for results in cursor5:
       rids.append(results['rid'])
     cursor5.close()
+  else if (my_filter == 'rfilter'):
+    rating = float(request.args.get('menu2'))
+    cursor6 = g.conn.execute("SELECT R.rid FROM located_in L, restaurant R WHERE R.rating>={rating} AND R.rid = L.rid AND (L.zip={string_zip} OR L.zip={string_forward_zip} OR L.zip={string_forward_again})".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again, rating=rating))
+    rids = []
+    for results in cursor6:
+      rids.append(results['rid'])
+    cursor6.close()
   else:
     cursor2 = g.conn.execute("SELECT rid FROM located_in WHERE zip={string_zip} OR zip={string_forward_zip} OR zip={string_forward_again}".format(string_zip=string_zip , string_forward_zip=string_forward_zip , string_forward_again=string_forward_again))
     rids = []
@@ -283,13 +290,16 @@ def customer_new_orders(cid, cfilter):
       rids.append(results['rid'])
     cursor2.close()
   
-  restaurants = []
-  for rid in rids:
-    string_rid= "'" + rid + "'"
-    cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
-    for results in cursor3:
-      restaurants.append(results)
-    cursor3.close()  
+  if not rids:
+    restaurants = 'none'
+  else:
+    restaurants = []
+    for rid in rids:
+      string_rid= "'" + rid + "'"
+      cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid}".format(string_rid=string_rid))
+      for results in cursor3:
+        restaurants.append(results)
+      cursor3.close()  
   
   return render_template("customer_new_orders.html", cuisines=cuisines, restaurants=restaurants, cid=cid)
 
