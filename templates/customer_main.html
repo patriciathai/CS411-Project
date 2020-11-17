@@ -2,13 +2,18 @@
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
-    <h3 class="welcome">Welcome, {{c_name}}</h3>
-    <form method="GET" action="/customer_orderhist/{{cid}}">
-        <button> My Orders </button>
-    </form>
+        <h3 class="welcome">Welcome, {{c_name}}</h3>
     
-    <form method = "GET" action="/{{cid}}/neworders/none">
-        <button>Browse Restaurants in Your Area</button>     
-    </form>
+        <form method="GET" action="/customer_edit/{{cid}}/none">
+            <button>Edit My Information</button>
+        </form>
+        
+        <form method="GET" action="/customer_orderhist/{{cid}}">
+            <button>My Orders</button>
+        </form>
+        
+        <form method = "GET" action="/{{cid}}/neworders/none">
+            <button>Browse Restaurants in My Area</button>     
+        </form>
     </body>
 </html>
