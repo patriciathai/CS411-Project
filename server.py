@@ -329,10 +329,12 @@ def customer_choose_menu(cid, rid):
   
   #print(menu)
   
-  return render_template("customer_menu_order.html", info=info[0], menu=menu, string_rid=string_rid, string_cid=string_cid)
+  return render_template("customer_menu_order.html", info=info[0], menu=menu, rid=, cid=cid)
 
-@app.route('/<string_cid>/<string_rid>/submitorder', methods=['POST'])
-def customer_submit_order(string_cid,string_rid):
+@app.route('/<cid>/<rid>/submitorder', methods=['POST'])
+def customer_submit_order(cid,rid):
+  string_cid = "'" + cid + "'"
+  string_rid= "'" + rid + "'"
   f = request.form
   
   selected_menu_name = []
