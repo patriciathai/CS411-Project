@@ -26,11 +26,11 @@
             <div class="account">
                 <h3> Edit Account Info:</h3>
                 <label for="s_name">Full Name:</label><br>
-                <input type="text" id="s_name" name="s_name"><br>
+                <input type="text" id="s_name" name="s_name" placeholder="Firstname Lastname"><br>
                 <label for="s_email">Email:</label><br>
                 <input type="email" id="s_email" name="s_email"><br>
                 <label for="s_phone">Phone Number:</label><br>
-                <input type="tel" id="s_phone" name="s_phone"><br>
+                <input type="tel" id="s_phone" name="s_phone" pattern="[0-9]{10}"><br>
                 <button>Save</button>
             </div>
         </form><br>
@@ -57,7 +57,7 @@
                 <label for="apt">Apartment:</label><br>
                 <input type="text" id="apt" name="apt"><br>
                 <label for="zip">Zip Code:</label><br>
-                <input type="text" id="zip" name="zip"><br>
+                <input type="text" id="zip" name="zip" placeholder="Must in Manhattan"><br>
                 <button>Save</button>
             </div>
         </form><br>
@@ -69,11 +69,11 @@
             <div class="payment">
                 <h3>Edit Payment Method:</h3>
                 <label for="card_num">Card Number:</label><br>
-                <input type="text" id="card_num" name="card_num"><br>
+                <input type="text" id="card_num" name="card_num" placeholder="16 digits"><br>
                 <label for="exp">Expiration Date (mm/dd/yy):</label><br>
                 <input type="date" id="exp" name="exp"><br>
                 <label for="sec">Security Code:</label><br>
-                <input type="text" id="sec" name="sec"><br>
+                <input type="text" id="sec" name="sec" placeholder="3 digits"><br>
                 <button>Save</button>
             </div>
         </form><br>
