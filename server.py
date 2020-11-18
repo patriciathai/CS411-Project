@@ -501,7 +501,7 @@ def driver_signup():
 @app.route("/add_driver", methods=['POST'])
 def add_driver():
   #This retrieves most recent driver id in the driver table, which lets us assign an id to a new driver
-  cursor = g.conn.execute("SELECT did FROM driver ORDER BY did DESC LIMIT 1")
+  cursor = g.conn.execute("SELECT did FROM driver WHERE did != 'none' ORDER BY did DESC LIMIT 1")
   last_did = []
   for result in cursor:
       last_did.append(result[0])
@@ -511,6 +511,7 @@ def add_driver():
   email = request.form['s_email']
   phone = request.form['s_phone']
   password = request.form['s_pass']
+  print(last_did[0][1:])
   did = 'D' + str(int(last_did[0][1:]) + 1)
   g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s, %s)', did, email, phone, name, password)
 
