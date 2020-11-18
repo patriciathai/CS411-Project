@@ -102,8 +102,9 @@ def add_customer():
   name = request.form['s_name']
   email = request.form['s_email']
   phone = request.form['s_phone']
+  password = request.form['s_pass']
   cid = str(int(last_cid[0]) + 1).zfill(5)
-  g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s)', cid, email, phone, name)
+  g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s, %s)', cid, email, phone, name, password)
 
   number = request.form['number']
   street = request.form['street']
@@ -143,6 +144,12 @@ def edit_customer(cid, action):
     email = "'" + request.args.get('s_email') + "'"
     phone = "'" + request.args.get('s_phone') + "'"
     g.conn.execute('UPDATE customer SET c_name={name}, c_email={email}, c_phone={phone} WHERE cid={string_cid}'.format(name=name,email=email,phone=phone,string_cid=string_cid))
+    url = '/customer_main/' + cid
+    return redirect(url)
+  
+  if action == 'password':
+    password = "'" + request.args.get('s_pass') + "'"
+    g.conn.execute('UPDATE customer SET c_password={password} WHERE cid={string_cid}'.format(password=password,string_cid=string_cid))
     url = '/customer_main/' + cid
     return redirect(url)
     
@@ -503,11 +510,39 @@ def add_driver():
   name = request.form['s_name']
   email = request.form['s_email']
   phone = request.form['s_phone']
+  password = request.form['s_pass']
   did = 'D' + str(int(last_did[0][1:]) + 1)
-  g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s)', did, email, phone, name)
+  g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s, %s)', did, email, phone, name, password)
 
   url = '/driver_main/' + did
   return redirect(url)
+
+@app.route("/driver_edit/<did>/<action>", methods=['GET','POST'])
+def edit_driver(did, action):
+  string_did= "'" + did + "'"
+  cursor = g.conn.execute("SELECT d_name, d_email, d_phone FROM driver WHERE did={string_did}".format(string_did=string_did))
+  d_info = []
+  for result in cursor:
+      d_info.append(result)
+  cursor.close()
+  info = d_info[0]
+
+  if action == 'account':
+    name = "'" + request.args.get('s_name') + "'"
+    email = "'" + request.args.get('s_email') + "'"
+    phone = "'" + request.args.get('s_phone') + "'"
+    g.conn.execute('UPDATE driver SET d_name={name}, d_email={email}, d_phone={phone} WHERE did={string_did}'.format(name=name,email=email,phone=phone,string_did=string_did))
+    url = '/driver_main/' + did
+    return redirect(url)
+  
+  if action == 'password':
+    password = "'" + request.args.get('s_pass') + "'"
+    g.conn.execute('UPDATE driver SET d_password={password} WHERE did={string_did}'.format(password=password,string_did=string_did))
+    url = '/driver_main/' + did
+    return redirect(url)
+  
+  else:
+    return render_template('driver_edit.html', did=did, info=info)
 
 @app.route("/driver_main/<did>")
 def driver_main(did):

@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <style>
+            input {
+                width: 300px;
+                margin-bottom: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Manhattan Food Delivery</h1>
+        <h2>Delivery Driver Portal</h2>
+        <h3 class="welcome">Welcome, {{info['d_name']}}</h3>
+
+        <form method="GET" action="/driver_main/{{did}}">
+            <button>Back to Main Portal</button>
+        </form>
+
+        <h3>Edit My Information</h3>
+
+        <p>
+            My Email: {{info['d_email']}}<br>
+            My Phone Number: {{info['d_phone']}}
+        </p>
+        <form method="GET" action="/driver_edit/{{did}}/account">
+            <div class="account">
+                <h3> Edit Account Info:</h3>
+                <label for="s_name">Full Name:</label><br>
+                <input type="text" id="s_name" name="s_name"><br>
+                <label for="s_email">Email:</label><br>
+                <input type="email" id="s_email" name="s_email"><br>
+                <label for="s_phone">Phone Number:</label><br>
+                <input type="tel" id="s_phone" name="s_phone"><br>
+                <button>Save</button>
+            </div>
+        </form><br>
+
+        <form method="GET" action="/driver_edit/{{did}}/password">
+            <div class="account">
+                <h3> Change Password:</h3>
+                <label for="s_pass">Password:</label><br>
+                <input type="password" id="s_pass" name="s_pass"><br>
+                <button>Save</button>
+            </div>
+        </form>
+    </body>
+</html>
