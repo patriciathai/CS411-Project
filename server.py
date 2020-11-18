@@ -143,43 +143,47 @@ def edit_customer(cid, action):
   info_zip = "'" + info['zip'] + "'"
   info_card_number = "'" + info['card_number'] + "'"
 
-  if action == 'account':
-    name = "'" + request.args.get('s_name') + "'"
-    email = "'" + request.args.get('s_email') + "'"
-    phone = "'" + request.args.get('s_phone') + "'"
-    g.conn.execute('UPDATE customer SET c_name={name}, c_email={email}, c_phone={phone} WHERE cid={string_cid}'.format(name=name,email=email,phone=phone,string_cid=string_cid))
-    url = '/customer_main/' + cid
-    return redirect(url)
-  
-  if action == 'password':
-    password = "'" + request.args.get('s_pass') + "'"
-    g.conn.execute('UPDATE customer SET c_password={password} WHERE cid={string_cid}'.format(password=password,string_cid=string_cid))
-    url = '/customer_main/' + cid
-    return redirect(url)
+  try:
+    if action == 'account':
+      name = "'" + request.args.get('s_name') + "'"
+      email = "'" + request.args.get('s_email') + "'"
+      phone = "'" + request.args.get('s_phone') + "'"
+      g.conn.execute('UPDATE customer SET c_name={name}, c_email={email}, c_phone={phone} WHERE cid={string_cid}'.format(name=name,email=email,phone=phone,string_cid=string_cid))
+      url = '/customer_main/' + cid
+      return redirect(url)
     
-  elif action == 'address':
-    number = "'" + request.args.get('number') + "'" 
-    street = "'" + request.args.get('street') + "'" 
-    apt = "'" + request.args.get('apt') + "'" 
-    zip_code = "'" + request.args.get('zip') + "'" 
-    g.conn.execute('DELETE FROM lives_in WHERE cid={string_cid}'.format(string_cid=string_cid))
-    g.conn.execute('UPDATE address SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE number={info_number} AND street={info_street} AND apt={info_apt} AND zip={info_zip}'.format(number=number,street=street,apt=apt,zip_code=zip_code, info_zip=info_zip, info_number=info_number, info_street=info_street, info_apt=info_apt))
-    g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, request.args.get('number'), request.args.get('street'), request.args.get('apt'), request.args.get('zip'))
-    url = '/customer_main/' + cid
-    return redirect(url)
+    if action == 'password':
+      password = "'" + request.args.get('s_pass') + "'"
+      g.conn.execute('UPDATE customer SET c_password={password} WHERE cid={string_cid}'.format(password=password,string_cid=string_cid))
+      url = '/customer_main/' + cid
+      return redirect(url)
+      
+    elif action == 'address':
+      number = "'" + request.args.get('number') + "'" 
+      street = "'" + request.args.get('street') + "'" 
+      apt = "'" + request.args.get('apt') + "'" 
+      zip_code = "'" + request.args.get('zip') + "'" 
+      g.conn.execute('DELETE FROM lives_in WHERE cid={string_cid}'.format(string_cid=string_cid))
+      g.conn.execute('UPDATE address SET number={number}, street={street}, apt={apt}, zip={zip_code} WHERE number={info_number} AND street={info_street} AND apt={info_apt} AND zip={info_zip}'.format(number=number,street=street,apt=apt,zip_code=zip_code, info_zip=info_zip, info_number=info_number, info_street=info_street, info_apt=info_apt))
+      g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, request.args.get('number'), request.args.get('street'), request.args.get('apt'), request.args.get('zip'))
+      url = '/customer_main/' + cid
+      return redirect(url)
+    
+    elif action == 'payment':
+      card_num = "'" + request.args.get('card_num') + "'" 
+      exp = "'" + request.args.get('exp') + "'" 
+      sec = "'" + request.args.get('sec') + "'"
+      g.conn.execute('DELETE FROM pays_with WHERE cid={string_cid}'.format(string_cid=string_cid))
+      g.conn.execute('UPDATE payment_method SET card_number={card_num}, exp={exp}, sec_code={sec} WHERE card_number={info_card_number}'.format(card_num=card_num, exp=exp, sec=sec, info_card_number=info_card_number))
+      g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, request.args.get('card_num'))
+      url = '/customer_main/' + cid
+      return redirect(url)
+    
+    else:
+      return render_template('customer_edit.html', cid=cid, info=info, error='none')
   
-  elif action == 'payment':
-    card_num = "'" + request.args.get('card_num') + "'" 
-    exp = "'" + request.args.get('exp') + "'" 
-    sec = "'" + request.args.get('sec') + "'"
-    g.conn.execute('DELETE FROM pays_with WHERE cid={string_cid}'.format(string_cid=string_cid))
-    g.conn.execute('UPDATE payment_method SET card_number={card_num}, exp={exp}, sec_code={sec} WHERE card_number={info_card_number}'.format(card_num=card_num, exp=exp, sec=sec, info_card_number=info_card_number))
-    g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, request.args.get('card_num'))
-    url = '/customer_main/' + cid
-    return redirect(url)
-  
-  else:
-    return render_template('customer_edit.html', cid=cid, info=info)
+  except exc.SQLAlchemyError:
+    return render_template('customer_edit.html', cid=cid, info=info, error='error')
 
 
 @app.route("/customer_main/<cid>")
@@ -498,9 +502,9 @@ def driver_login():
     url = '/driver_main/' + did
     return redirect(url)
 
-@app.route("/driver_signup")
-def driver_signup():
-  return render_template('driver_signup.html')
+@app.route("/driver_signup/<error>")
+def driver_signup(error):
+  return render_template('driver_signup.html', error=error)
 
 @app.route("/add_driver", methods=['POST'])
 def add_driver():
@@ -511,16 +515,19 @@ def add_driver():
       last_did.append(result[0])
   cursor.close()
 
-  name = request.form['s_name']
-  email = request.form['s_email']
-  phone = request.form['s_phone']
-  password = request.form['s_pass']
-  print(last_did[0][1:])
-  did = 'D' + str(int(last_did[0][1:]) + 1)
-  g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s, %s)', did, email, phone, name, password)
+  try:
+    name = request.form['s_name']
+    email = request.form['s_email']
+    phone = request.form['s_phone']
+    password = request.form['s_pass']
+    print(last_did[0][1:])
+    did = 'D' + str(int(last_did[0][1:]) + 1)
+    g.conn.execute('INSERT INTO driver VALUES (%s, %s, %s, %s, %s)', did, email, phone, name, password)
 
-  url = '/driver_main/' + did
-  return redirect(url)
+    url = '/driver_main/' + did
+    return redirect(url)
+  except exc.SQLAlchemyError:
+    return redirect('/driver_signup/error')
 
 @app.route("/driver_edit/<did>/<action>", methods=['GET','POST'])
 def edit_driver(did, action):
@@ -532,22 +539,26 @@ def edit_driver(did, action):
   cursor.close()
   info = d_info[0]
 
-  if action == 'account':
-    name = "'" + request.args.get('s_name') + "'"
-    email = "'" + request.args.get('s_email') + "'"
-    phone = "'" + request.args.get('s_phone') + "'"
-    g.conn.execute('UPDATE driver SET d_name={name}, d_email={email}, d_phone={phone} WHERE did={string_did}'.format(name=name,email=email,phone=phone,string_did=string_did))
-    url = '/driver_main/' + did
-    return redirect(url)
+  try:
+    if action == 'account':
+      name = "'" + request.args.get('s_name') + "'"
+      email = "'" + request.args.get('s_email') + "'"
+      phone = "'" + request.args.get('s_phone') + "'"
+      g.conn.execute('UPDATE driver SET d_name={name}, d_email={email}, d_phone={phone} WHERE did={string_did}'.format(name=name,email=email,phone=phone,string_did=string_did))
+      url = '/driver_main/' + did
+      return redirect(url)
+    
+    if action == 'password':
+      password = "'" + request.args.get('s_pass') + "'"
+      g.conn.execute('UPDATE driver SET d_password={password} WHERE did={string_did}'.format(password=password,string_did=string_did))
+      url = '/driver_main/' + did
+      return redirect(url)
+    
+    else:
+      return render_template('driver_edit.html', did=did, info=info, error='none')
   
-  if action == 'password':
-    password = "'" + request.args.get('s_pass') + "'"
-    g.conn.execute('UPDATE driver SET d_password={password} WHERE did={string_did}'.format(password=password,string_did=string_did))
-    url = '/driver_main/' + did
-    return redirect(url)
-  
-  else:
-    return render_template('driver_edit.html', did=did, info=info)
+  except exc.SQLAlchemyError:
+    return render_template('driver_edit.html', cid=cid, info=info, error='error')
 
 @app.route("/driver_main/<did>")
 def driver_main(did):

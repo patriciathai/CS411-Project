@@ -5,6 +5,7 @@
                 width: 300px;
                 margin-bottom: 5px;
             }
+            .error { color: red;}
         </style>
     </head>
     <body>
@@ -16,6 +17,7 @@
             <button>Back to Main Portal</button>
         </form>
 
+        {% if error == 'error' %}<p class='error'>The information you have provided is either invalid or already exists in our records. Please try again.</p>{% endif %}
         <h3>Edit My Information</h3>
 
         <p>
