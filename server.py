@@ -558,7 +558,7 @@ def edit_driver(did, action):
       return render_template('driver_edit.html', did=did, info=info, error='none')
   
   except exc.SQLAlchemyError:
-    return render_template('driver_edit.html', cid=cid, info=info, error='error')
+    return render_template('driver_edit.html', did=did, info=info, error='error')
 
 @app.route("/driver_main/<did>")
 def driver_main(did):
