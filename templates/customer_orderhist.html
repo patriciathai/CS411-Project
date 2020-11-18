@@ -21,20 +21,24 @@
 		        var y = document.getElementById("update_btn");
                 y.style.display = "none";
             }
-            window.onload = (event) => {              
-                var slider = document.getElementById('slider');
+            window.onload = (event) => {
+                var slider = document.getElementById('slider')
                 var output = document.getElementById("slider_output");
-                output.innerHTML = document.getElementById("slider").value;
-                slider.oninput = function() {
-                    output.innerHTML = this.value;
-                }
+		if(slider != null) {
+		    output.innerHTML = slider.value;
+                    slider.oninput = function() {
+                    	output.innerHTML = this.value;
+                    }
+		}
 
                 var slider2 = document.getElementById('slider2');
                 var output2 = document.getElementById("slider_output2");
-                output2.innerHTML = document.getElementById("slider2").value;
-                slider2.oninput = function() {
-                    output2.innerHTML = this.value;
-                }
+		if (slider2 != null){
+		    output2.innerHTML = slider2.value;
+                    slider2.oninput = function() {
+                    	output2.innerHTML = this.value;
+                    }
+		}
             }
         </script>
     </head>
