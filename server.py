@@ -12,6 +12,7 @@ import os
 import random
   # accessible as a variable in index.html:
 from sqlalchemy import *
+from sqlalchemy import exc
 from sqlalchemy.pool import NullPool
 from flask import Flask, request, render_template, g, redirect, Response
 
@@ -86,9 +87,9 @@ def customer_login():
     url = '/customer_main/' + cid
     return redirect(url)
 
-@app.route("/customer_signup")
-def customer_signup():
-  return render_template('customer_signup.html')
+@app.route("/customer_signup/<error>")
+def customer_signup(error):
+  return render_template('customer_signup.html', error=error)
 
 @app.route("/add_customer", methods=['POST'])
 def add_customer():
@@ -99,30 +100,33 @@ def add_customer():
       last_cid.append(result[0])
   cursor.close()
 
-  name = request.form['s_name']
-  email = request.form['s_email']
-  phone = request.form['s_phone']
-  password = request.form['s_pass']
-  cid = str(int(last_cid[0]) + 1).zfill(5)
-  g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s, %s)', cid, email, phone, name, password)
+  try:
+    name = request.form['s_name']
+    email = request.form['s_email']
+    phone = request.form['s_phone']
+    password = request.form['s_pass']
+    cid = str(int(last_cid[0]) + 1).zfill(5)
+    g.conn.execute('INSERT INTO customer VALUES (%s, %s, %s, %s, %s)', cid, email, phone, name, password)
 
-  number = request.form['number']
-  street = request.form['street']
-  apt = request.form['apt']
-  zip_code = request.form['zip']
-  city = request.form['city']
-  state = request.form['state']
-  g.conn.execute('INSERT INTO address VALUES (%s, %s, %s, %s, %s, %s)', number, street, apt, zip_code, city, state)
-  g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, number, street, apt, zip_code)
+    number = request.form['number']
+    street = request.form['street']
+    apt = request.form['apt']
+    zip_code = request.form['zip']
+    city = request.form['city']
+    state = request.form['state']
+    g.conn.execute('INSERT INTO address VALUES (%s, %s, %s, %s, %s, %s)', number, street, apt, zip_code, city, state)
+    g.conn.execute('INSERT INTO lives_in VALUES (%s, %s, %s, %s, %s)', cid, number, street, apt, zip_code)
 
-  card_num = request.form['card_num']
-  exp = request.form['exp']
-  sec = request.form['sec']
-  g.conn.execute('INSERT INTO payment_method VALUES (%s, %s, %s)', card_num, exp, sec)
-  g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
+    card_num = request.form['card_num']
+    exp = request.form['exp']
+    sec = request.form['sec']
+    g.conn.execute('INSERT INTO payment_method VALUES (%s, %s, %s)', card_num, exp, sec)
+    g.conn.execute('INSERT INTO pays_with VALUES (%s, %s)', cid, card_num)
 
-  url = '/customer_main/' + cid
-  return redirect(url)
+    url = '/customer_main/' + cid
+    return redirect(url)
+  except exc.SQLAlchemyError:
+    return redirect('/customer_signup/error')
 
 @app.route("/customer_edit/<cid>/<action>", methods=['GET','POST'])
 def edit_customer(cid, action):

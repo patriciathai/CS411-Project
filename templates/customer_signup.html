@@ -13,13 +13,14 @@
                 width: 100px;
             }
 
-            #error_message { color: red;}
+            .error { color: red;}
         </style>
     </head>
     <body>
         <h1>Manhattan Food Delivery</h1>
         <h2>Customer Portal</h2>
         <h3>Sign Up</h3>
+        {% if error == 'error' %}<p class='error'>The information you have provided is either invalid or already exists in our records. Please try again.</p>{% endif %}
         <form method="POST" action="/add_customer">
             <div class="account">
                 <p>Please fill up your basic account information</p>
@@ -57,7 +58,7 @@
                 <label for="card_num">Card Number:</label><br>
                 <input type="text" id="card_num" name="card_num" placeholder="16 digits"><br>
                 <label for="exp">Expiration Date (mm/dd/yy):</label><br>
-                <input type="date" id="exp" name="exp"><br>
+                <input type="date" id="exp" name="exp" min="2020-12-01"><br>
                 <label for="sec">Security Code:</label><br>
                 <input type="text" id="sec" name="sec" placeholder="3 digits">
             </div><br>
