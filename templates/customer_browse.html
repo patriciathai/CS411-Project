@@ -1,0 +1,232 @@
+<html>  
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <link href='https://fonts.googleapis.com/css?family=Sanchez' rel='stylesheet'>
+        <link href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700,800,900' rel='stylesheet'>
+    	<style>
+            body {
+                font-family: 'Lato';
+                width: 100%;
+                margin: 0 auto;
+                font-weight: 300;
+            }
+
+            .logo {
+                font-family: 'Sanchez';
+                font-size: 45px;
+                letter-spacing: 1px;
+                display: inline-block;
+                margin-left: 40px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                margin-right: 600px;
+            }
+
+            .account {font-size: 20px; margin-top: 28px; }
+
+            .address { margin-right: 60px; margin-top: 31px; }
+
+            .address span{
+                background-color: #e6d7f9;
+                padding: 5px 30px 5px 20px;
+                border-radius: 30px;
+                font-size: 18px;
+            }
+
+            .purple {color: #7A2BDE;}
+
+            .bold {font-weight: 500;}
+
+            .bi-chevron-down {margin-left: 10px; margin-bottom: 5px;}
+
+            .bi-geo-alt-fill { margin-bottom: 5px; margin-right: 5px;}
+
+            .content {background-image: linear-gradient(#F0F0F0, white, white);}
+
+            .container-fluid {width: 70%; margin-left: 15%; padding-bottom: 100px;}
+
+            .nearyou {
+                font-size: 32px;
+                padding-top: 40px;
+            }
+
+            input, select, .searchbtn { border: none; background-color: transparent;}
+
+            input:focus{outline: none;}
+
+            .search {
+                background-color: white;
+                width: 400px;
+                height: 40px;
+                border: 1px solid #7A2BDE;
+                border-radius: 30px;
+                margin-top: 30px;
+                margin-left: 12px;
+                display: inline-block;
+            }
+
+            .searchbox {
+                width: 320px;
+                margin-left: 10px;
+                margin-top: 5px;
+            }
+
+            .cuisine, .rating {
+                display: inline-block;
+                width: 120px;
+                background-color: #a069e6;
+                height: 40px;
+                border-radius: 30px;
+                margin-left: 30px;
+                margin-top: 30px;
+            }
+
+            select {
+                color: white;
+                font-weight: 400;
+                font-size: 17px;
+                width: 80px;
+                margin-top: 7px;
+                margin-left: 10px;
+            }
+
+            .favtitle {font-size: 22px;}
+
+            .fav {
+                background-color: #f3eafc;
+                margin-top: 30px;
+                width: 105%;
+                margin-left: -2.5%;
+                padding-top: 20px;
+                padding-bottom: 30px;
+                border-radius: 30px;
+            }
+
+            .fav .row , .favtitle {width: 95%; margin-left: 2.5%;}
+
+            .fav .row { margin-top: 15px;}
+
+            .restaurant_content {background-color: white; padding-bottom: 10px; border: 2px solid lightgrey;}
+
+            img { width: 100%; margin-bottom: 8px;}
+
+            .rname {
+                margin-left: 10px;
+                font-size: 22px;
+                font-weight: 500;
+            }
+
+            .rdetails { margin-left: 10px; color: grey; }
+
+            .bi-star-fill { margin-left: 5px; margin-bottom: 5px;}
+
+            .nonfav .col-4{ margin-top: 30px;}
+
+    	</style>
+    </head>
+    <body>
+        <div class="nav">
+            <div class="logo"><span class="purple">Meal</span>hattan</div>
+            <div class="address">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                    </svg>
+                    240 Columbus Ave
+                </span>
+            </div>
+            <div class="account">
+                Welcome, <span class="purple bold">JANE</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                </svg>
+            </div>
+        </div>
+        <div class="content">
+            <div class='container-fluid'>
+                <div class="nearyou">Restaurants Near You</div>
+
+                <div class="row">
+                    <div class="search">
+                        <form action="/{{cid}}/neworders/search" method="GET">
+                            <input type="text" name="searchbox" class="searchbox" placeholder="Search for a restaurant...">
+                            <button type="submit" class="searchbtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="grey" class="bi bi-search" viewBox="0 0 16 16">
+                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                    <form action="/{{cid}}/neworders/cfilter" method="GET" class="cuisine">
+                        <select name="menu1" onchange='if(this.value != "Cuisine") { this.form.submit(); }'>
+                            <option value="Cuisine">Cuisine</option>
+                            {% for c in cuisines %}
+                                <option value="{{c}}">{{c}}</option>
+                            {% endfor %}
+                        </select>
+                    </form>
+                    <form action="/{{cid}}/neworders/rfilter" method="GET" class="rating">
+                        <select name="menu2" onchange='if(this.value != "Rating") { this.form.submit(); }'>
+                            <option value="Rating">Rating</option>
+                            <option value="1.0">&GreaterEqual; 1.0</option>
+                            <option value="2.0">&GreaterEqual; 2.0</option>
+                            <option value="3.0">&GreaterEqual; 3.0</option>
+                            <option value="4.0">&GreaterEqual; 4.0</option>
+                        </select>
+                    </form>
+                </div>
+
+                {% if restaurants == 'none' %}
+                    <p>There are no restaurants in your area that match your requests.</p>
+                {% else %}
+                    {% if rec_restaurants %}
+                        <div class="fav">
+                            <span class="favtitle">Your Favorites</span>
+                            <div class="row">
+                                {% set i = 0 %}
+                                {% for r in rec_restaurants %}
+                                    <div class="col-4">
+                                        <div class="restaurant_content">
+                                            <img src={{recpics[i]}}>
+                                            <span class="rname">{{r['r_name']}}</span><br>
+                                            <span class="rdetails">{{r['cuisine']}} &ensp;&middot;&ensp; <span class="purple">{{r['rating']}}</span></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e6d7f9" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                            </svg>
+                                            <!-- <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                                                <button type="submit" value="Submit">Browse</button>
+                                            </form> -->
+                                        </div>
+                                    </div>
+                                    {% set i = i + 1 %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if restaurants %}
+                        <div class="row nonfav">
+                            {% set j = 0 %}
+                            {% for r in restaurants %}
+                                <div class="col-4">
+                                    <div class="restaurant_content">
+                                        <img src={{recpics[j]}}>
+                                        <span class="rname">{{r['r_name']}}</span><br>
+                                        <span class="rdetails">{{r['cuisine']}} &ensp;&middot;&ensp; <span class="purple">{{r['rating']}}</span></span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e6d7f9" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                        </svg>
+                                        <!-- <form action="/{{cid}}/{{r['rid']}}/menu_order" method="POST">
+                                            <button type="submit" value="Submit">Browse</button>
+                                        </form> -->
+                                    </div>
+                                </div>
+                                {% set j = j + 1 %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </body>
+</html>
