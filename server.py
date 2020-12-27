@@ -307,11 +307,21 @@ def update_rating(cid, rid):
   url = '/customer_orderhist/'+cid
   return redirect(url)
 
+recpics = {}
+restpics = {}
+recid = ['40377789', '2846', '344379']
+restid = ['386571', '323089', '424763', '7502', '349830', '349811', '107185', '232672', '307593', '251526', '323347', '305884', '272325', '2391', '2394']
 
-recpics = ['/images/rec1.png', '/images/rec2.png', '/images/rec3.png']
-restpics = ['/images/rest1.png', '/images/rest2.png', '/images/rest3.png', '/images/rest4.png', '/images/rest5.png', '/images/rest6.png'
-'/images/rest7.png', '/images/rest8.png', '/images/rest9.png', '/images/rest10.png', '/images/rest11.png', '/images/rest12.png',
-'/images/rest13.png', '/images/rest14.png', '/images/rest15.png']
+i = 1
+for r in recid:
+  recpics[r] = '../images/rec' + str(i) + '.png'
+  i += 1
+
+j = 1
+for r in restid:
+  restpics[r] = '../images/rest' + str(j) + '.png'
+  j += 1
+
 @app.route('/<cid>/neworders/<my_filter>')
 def customer_new_orders(cid, my_filter):
   string_cid = "'"+cid+"'"

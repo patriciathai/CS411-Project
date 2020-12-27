@@ -102,7 +102,7 @@
                 border-radius: 30px;
             }
 
-            .fav .row , .favtitle {width: 95%; margin-left: 2.5%;}
+            .fav .row , .favtitle {width: 97%; margin-left: 1.5%;}
 
             .fav .row { margin-top: 15px;}
 
@@ -187,7 +187,7 @@
                                 {% for r in rec_restaurants %}
                                     <div class="col-4">
                                         <div class="restaurant_content">
-                                            <img src="{{ url_for('static', filename = recpics[i]) }}">
+                                            <img src="{{ url_for('static', filename = 'images/' + recpics[r['rid']]) }}">
                                             <span class="rname">{{r['r_name']}}</span><br>
                                             <span class="rdetails">{{r['cuisine']}} &ensp;&middot;&ensp; <span class="purple">{{r['rating']}}</span></span>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e6d7f9" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -209,7 +209,7 @@
                             {% for r in restaurants %}
                                 <div class="col-4">
                                     <div class="restaurant_content">
-                                        <img src="{{ url_for('static', filename = restpics[j]) }}">
+                                        <img src="{{ url_for('static', filename = 'images/' + restpics[r['rid']]) }}">
                                         <span class="rname">{{r['r_name']}}</span><br>
                                         <span class="rdetails">{{r['cuisine']}} &ensp;&middot;&ensp; <span class="purple">{{r['rating']}}</span></span>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e6d7f9" class="bi bi-star-fill" viewBox="0 0 16 16">
