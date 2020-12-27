@@ -307,6 +307,11 @@ def update_rating(cid, rid):
   url = '/customer_orderhist/'+cid
   return redirect(url)
 
+
+recpics = ['../images/rec1.png', '../images/rec2.png', '../images/rec3.png']
+restpics = ['../images/rest1.png', '../images/rest2.png', '../images/rest3.png', '../images/rest4.png', '../images/rest5.png', '../images/rest6.png'
+'../images/rest7.png', '../images/rest8.png', '../images/rest9.png', '../images/rest10.png', '../images/rest11.png', '../images/rest12.png',
+'../images/rest13.png', '../images/rest14.png', '../images/rest15.png']
 @app.route('/<cid>/neworders/<my_filter>')
 def customer_new_orders(cid, my_filter):
   string_cid = "'"+cid+"'"
@@ -377,7 +382,7 @@ def customer_new_orders(cid, my_filter):
         rec_restaurants.append(results)
       cursor8.close()
 
-  return render_template("customer_new_orders.html", cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
+  return render_template("customer_browse.html", recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants[:15], rec_restaurants=rec_restaurants, cid=cid)
 
 @app.route('/<cid>/<rid>/menu_order', methods=['POST'])
 def customer_choose_menu(cid, rid):
