@@ -381,16 +381,17 @@ def customer_new_orders(cid, my_filter):
     restaurants = []
     rec_restaurants =[]
     for rid in rids:
-      string_rid= "'" + rid + "'"
-      cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid NOT IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
-      for results in cursor3:
-        restaurants.append(results)
-      cursor3.close()
-
-      cursor8 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
-      for results in cursor8:
-        rec_restaurants.append(results)
-      cursor8.close()
+      if rid in restid:
+          string_rid= "'" + rid + "'"
+          cursor3 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid NOT IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
+          for results in cursor3:
+            restaurants.append(results)
+          cursor3.close()
+      elif rid in recid:
+          cursor8 = g.conn.execute("SELECT rid, r_name, cuisine, rating FROM restaurant WHERE rid={string_rid} AND rid IN (SELECT rid FROM rates WHERE cid = {string_cid} AND rating >= 4.0)".format(string_cid=string_cid, string_rid=string_rid))
+          for results in cursor8:
+            rec_restaurants.append(results)
+          cursor8.close()
 
   return render_template("customer_browse.html", recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants[:15], rec_restaurants=rec_restaurants, cid=cid)
 
