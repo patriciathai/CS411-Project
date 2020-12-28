@@ -393,7 +393,7 @@ def customer_new_orders(cid, my_filter):
             rec_restaurants.append(results)
           cursor8.close()
 
-  return render_template("customer_browse.html", my_filter = my_filter, recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
+  return render_template("customer_browse.html", cuisine = cuisine, rating = rating, name = name, my_filter = my_filter, recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
 
 @app.route('/<cid>/<rid>/menu_order', methods=['POST'])
 def customer_choose_menu(cid, rid):
