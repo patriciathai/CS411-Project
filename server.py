@@ -326,7 +326,10 @@ for r in restid:
 def customer_new_orders(cid, my_filter):
   string_cid = "'"+cid+"'"
   cursor = g.conn.execute("SELECT zip FROM lives_in WHERE cid={string_cid}".format(string_cid=string_cid))
-  zipcodes = []
+  zipcodes =[]
+  cuisine = ''
+  rating = 0
+  name = ''
   for results in cursor:
       zipcode = int(results['zip'])
       forward = zipcode+1
@@ -393,7 +396,7 @@ def customer_new_orders(cid, my_filter):
             rec_restaurants.append(results)
           cursor8.close()
 
-  return render_template("customer_browse.html", cuisine = cuisine, rating = rating, name = name, my_filter = my_filter, recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
+  return render_template("customer_browse.html", cuisine = cuisine[1:len(cuisine)-1], rating = rating, name = name[3:len(name)-3], my_filter = my_filter, recpics = recpics, restpics = restpics, cuisines=cuisines, restaurants=restaurants, rec_restaurants=rec_restaurants, cid=cid)
 
 @app.route('/<cid>/<rid>/menu_order', methods=['POST'])
 def customer_choose_menu(cid, rid):

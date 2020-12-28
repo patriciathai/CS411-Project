@@ -122,6 +122,8 @@
 
             .nonfav .col-4{ margin-top: 30px;}
 
+	    .filter {font-size: 20px; margin-bottom: -10px;}
+
     	</style>
     </head>
     <body>
@@ -223,8 +225,8 @@
                         {% endif %}
                     {% else %}
                         {% if my_filter == 'search' %}<div class='filter'>Search results for "{{name}}"</div>
-                        {% elif my_filer == 'cfilter' %}<div class='filter'>"{{cuisine}}" Cuisine Restaurants</div>
-                        {% elif my_filer == 'rfilter' %}<div class='filter'>Restaurants with rating {{rating}}+</div>
+                        {% elif my_filter == 'cfilter' %}<div class='filter'>"{{cuisine}}" Cuisine Restaurants</div>
+                        {% elif my_filter == 'rfilter' %}<div class='filter'>Restaurants with rating {{rating}}+</div>
                         {% endif %}
                         <div class="row nonfav">
                         {% if rec_restaurants %}
